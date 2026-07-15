@@ -1555,6 +1555,10 @@ function getTerrainSVG(id){
 }
 
 const scorecards = {
+  littlecrowresort:{source:"18Birdies — Oaks/Pines 18",tees:[{name:"Blue",yds:6601,rating:"72.3",slope:139,color:"#1a4a8a"},{name:"White",yds:6200,rating:"70.4",slope:132,color:"#ddd"}],
+    holes:[[400,4],[150,3],[375,4],[353,4],[512,5],[193,3],[366,4],[535,5],[360,4],[375,4],[195,3],[405,4],[507,5],[176,3],[395,4],[369,4],[350,4],[585,5]]},
+  thepinesatgrandv:{source:"GolfPass — Woods/Marsh 18",tees:[{name:"Green",yds:6890,rating:"73.6",slope:141,color:"#2a6a2a"},{name:"White",yds:6172,rating:"70.4",slope:135,color:"#ddd"}],
+    holes:[[533,5],[440,4],[174,3],[397,4],[189,3],[345,4],[400,4],[448,4],[541,5],[501,5],[204,3],[370,4],[351,4],[175,3],[527,5],[451,4],[418,4],[426,4]]},
   bunkerhills:{source:"18Birdies / official 27H PDF — North/East 18",tees:[{name:"Black",yds:6896,rating:"73.7",slope:140,color:"#222"},{name:"Blue",yds:6418,rating:"72.3",slope:136,color:"#1a4a8a"},{name:"White",yds:6110,rating:"70.7",slope:133,color:"#ddd"}],
     holes:[[419,4],[413,4],[372,4],[515,5],[432,4],[195,3],[380,4],[185,3],[560,5],[427,4],[368,4],[164,3],[486,5],[385,4],[535,5],[220,3],[450,4],[390,4]]},
   pebblecreek:{source:"18Birdies / official — Championship 18",tees:[{name:"Black",yds:6872,rating:"73.9",slope:138,color:"#222"},{name:"Blue",yds:6381,rating:"71.1",slope:127,color:"#1a4a8a"},{name:"White",yds:5942,rating:"69.3",slope:122,color:"#ddd"}],
@@ -2984,7 +2988,7 @@ const courses = [
    tags:["Resort","West-Central MN","Don Herfort","Spicer/New London","Lakes Region","Par 72"],
    desc:"A Don Herfort resort course in the Spicer/New London lakes area, open since 1971, offering 6,648 yards of rolling central-Minnesota golf with stay-and-play options near Green Lake.",
    awards:["Verified Minnesota public course (2026 research)"],
-   notes:"6,648 (71.9/130). On Hwy 23, New London/Spicer. Designer, year, rating & phone confirmed.",sc:null},
+   notes:"Oaks/Pines 18: Blue 6,601 (72.3/139), par 72 — hole-by-hole verified via 18Birdies. 27-hole resort (Oaks/Pines/Willows). On Hwy 23, New London/Spicer. Designer, year, phone confirmed.",sc:"littlecrowresort"},
 
   // #92 — Wapicada · designer N/A · ~1960s
   {id:92,rank:88,rankSrc:"Web-verified 2026 (GolfLink/official)",
@@ -3012,7 +3016,7 @@ const courses = [
    tags:["Resort","27 Holes","Brainerd Lakes","Joel Goldstrand","Grand View Lodge","Pine Forest"],
    desc:"The marquee 27-hole Joel Goldstrand layout at Grand View Lodge in the Brainerd Lakes area — three combinable nines (Marsh, Lakes, Woods) winding through pine forest and wetlands. The Marsh/Lakes 18 plays to 6,874 yards at 73.3/138.",
    awards:["Verified Minnesota public course (2026 research)"],
-   notes:"27 holes (Marsh/Lakes/Woods). Marsh+Lakes 18: 6,874 (73.3/138), par 72. Direct golf line (218) 963-8755 confirmed. Designer (Goldstrand), year, rating confirmed.",sc:null},
+   notes:"27 holes (Woods/Marsh/Lakes). Scorecard = Woods/Marsh 18: Green 6,890 (73.6/141), par 72 — hole-by-hole verified via GolfPass. Direct golf line (218) 963-8755 confirmed. Designer (Goldstrand), year confirmed.",sc:"thepinesatgrandv"},
 
   // #94 — The Preserve at Grand View Lodge · Hurdzan & Fry · 1996
   {id:94,rank:90,rankSrc:"Web-verified 2026 (GolfLink/official)",
