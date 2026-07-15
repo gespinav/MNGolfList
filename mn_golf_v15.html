@@ -1555,6 +1555,10 @@ function getTerrainSVG(id){
 }
 
 const scorecards = {
+  crowriver:{source:"GolfLink verified 2026",tees:[{name:"Black",yds:6784,rating:"73.2",slope:131,color:"#222"},{name:"Blue",yds:6474,rating:"71.8",slope:128,color:"#1a4a8a"},{name:"Bronze",yds:6012,rating:"69.7",slope:123,color:"#b8860b"}],
+    holes:[[365,4],[188,3],[536,5],[438,4],[368,4],[505,5],[144,3],[429,4],[415,4],[442,4],[376,4],[431,4],[211,3],[528,5],[411,4],[420,4],[187,3],[390,4]]},
+  rumriverhills:{source:"GolfLink verified 2026",tees:[{name:"Black",yds:6308,rating:"71.0",slope:117,color:"#222"},{name:"Blue",yds:6091,rating:"70.0",slope:115,color:"#1a4a8a"},{name:"White",yds:5738,rating:"68.4",slope:112,color:"#ddd"}],
+    holes:[[413,4],[525,5],[352,4],[160,3],[416,4],[200,3],[372,4],[303,4],[368,4],[374,4],[410,4],[517,5],[411,4],[118,3],[327,4],[161,3],[420,4],[461,5]]},
   richvalley:{source:"18Birdies — Blue/Red 18",tees:[{name:"Blue",yds:6642,rating:"69.3",slope:120,color:"#1a4a8a"},{name:"White",yds:6100,rating:"67.0",slope:115,color:"#ddd"}],
     holes:[[332,4],[175,3],[340,4],[364,4],[221,3],[330,4],[541,5],[497,5],[401,4],[181,3],[392,4],[228,3],[524,5],[327,4],[379,4],[457,4],[495,4],[458,4]]},
   thewendigo:{source:"mygolfscorecards — Gold tees",tees:[{name:"Gold",yds:6203,rating:"69.0",slope:132,color:"#b8860b"}],
@@ -2615,19 +2619,19 @@ const courses = [
    awards:["St. Paul Parks & Recreation historic course","MGA Registry"],
    notes:"Par 70. Red 5,720 (67.5/113) / White 5,252 (65.8/108). † Verify current tee configuration — renovation plans have been discussed by St. Paul Parks. Highly accessible and affordable.",sc:"phalenpark"},
 
-  // #63 — Rum River Country Club · Larry Packard · 1961 †
+  // #63 — Rum River Hills Golf Club · Joel Goldstrand · 1986 (corrected from mislabeled "Rum River Country Club")
   {id:63,rank:61,rankSrc:"GolfPass 2026 / MinnesotaGolf.com 2026",
-   name:"Rum River Country Club",city:"Ramsey",region:"metro",types:["semi"],
+   name:"Rum River Hills Golf Club",city:"Ramsey",region:"metro",types:["daily"],
    lat:45.2637,lng:-93.4521,
-   designer:"Lawrence Packard",yr:1961,par:72,yds:"6,568",rating:"71.5/128",
-   fee:"$26–$52",phone:"(763) 427-2850",
-   website:"https://www.rumrivercountryclub.com",
-   scorecardUrl:"https://www.rumrivercountryclub.com",
+   designer:"Joel Goldstrand",yr:1986,par:71,yds:"6,308",rating:"71.0/117",
+   fee:"$26–$52",phone:"(763) 753-3339",
+   website:"https://www.rumriverhills.com/",
+   scorecardUrl:"https://www.rumriverhills.com/",
    gd100:false,gpRank:null,
-   tags:["Semi-Private","North Metro","River Views","Classic Layout","Affordable","Larry Packard","Rum River"],
-   desc:"Rum River Country Club is a classic Lawrence Packard design winding along the Rum River corridor north of the Twin Cities in Ramsey. Semi-private with open public tee times, the course delivers classic parkland challenge through mature trees with natural river valley beauty.",
+   tags:["Daily Fee","North Metro","River Views","Joel Goldstrand","Affordable","Anoka County","Rum River"],
+   desc:"Rum River Hills is a Joel Goldstrand design winding along the Rum River corridor north of the Twin Cities in Ramsey. A public course with mature trees and natural river valley beauty, it offers approachable parkland golf at modest rates.",
    awards:["MGA Registry","MinnesotaGolf.com Voter-Recognized North Metro"],
-   notes:"Regular 6,568 (71.5/128) / White 6,108 (69.8/123) / Forward 5,487. † Verify current public access policy and tee-time booking process.",sc:null},
+   notes:"Black 6,308 (71.0/117) / Blue 6,091 (70.0/115) / White 5,738 (68.4/112), par 71 — hole-by-hole verified via GolfLink. Corrected from earlier mislabeled 'Rum River Country Club / Packard 1961' data. 16659 St Francis Blvd, Ramsey.",sc:"rumriverhills"},
 
   // #64 — Pokegama Golf Course · Municipal · 1924 †
   {id:64,rank:62,rankSrc:"MinnesotaGolf.com 2026 / MGA Registry",
@@ -2697,19 +2701,19 @@ const courses = [
    awards:["MGA Registry","Long-established western Minnesota course"],
    notes:"Par 71. Regular 6,278 (70.0/120). † Verify website, phone, current fee, and rating/slope before launch.",sc:"pebblelake"},
 
-  // #70 — GlenEagles Golf Course · Municipal · 1970 †
+  // #70 — Crow River Golf Club · Hutchinson · 1938 (replaces phantom "GlenEagles" which does not exist)
   {id:70,rank:67,rankSrc:"MinnesotaGolf.com 2026 / MGA Registry",
-   name:"GlenEagles Golf Course",city:"Hutchinson",region:"outstate",types:["municipal"],
-   lat:44.8873,lng:-94.3630,
-   designer:"Unknown",yr:1970,par:71,yds:"6,320",rating:"69.8/120",
-   fee:"$18–$34",phone:"(320) 587-6229",
-   website:"https://www.ci.hutchinson.mn.us/parks-recreation/glen-eagles-golf-course/",
-   scorecardUrl:"https://www.ci.hutchinson.mn.us/parks-recreation/glen-eagles-golf-course/",
+   name:"Crow River Golf Club",city:"Hutchinson",region:"outstate",types:["semi","daily"],
+   lat:44.9010,lng:-94.3880,
+   designer:"Unknown; established 1938",yr:1938,par:71,yds:"6,784",rating:"73.2/131",
+   fee:"$30–$52",phone:"(320) 587-3070",
+   website:"https://www.crowrivergolf.com/",
+   scorecardUrl:"https://www.crowrivergolf.com/course-details",
    gd100:false,gpRank:null,
-   tags:["Municipal","Central MN","Affordable","Classic Layout","McLeod County","Hutchinson","Family-Friendly"],
-   desc:"GlenEagles is Hutchinson's municipal golf facility — a clean, well-kept par-71 layout on the city's west side. Affordable for families and casual golfers, it represents the best of small-city Minnesota municipal golf, well-maintained and welcoming.",
-   awards:["MGA Registry","MinnesotaGolf.com Community Course Recognition"],
-   notes:"Par 71. Regular 6,320 (69.8/120). † Verify current phone and website — city web addresses change. 65 miles west of Minneapolis on Hwy 7.",sc:null},
+   tags:["Semi-Private","Central MN","Historic 1938","McLeod County","Hutchinson","Crow River"],
+   desc:"Crow River Golf Club is Hutchinson's established 18-hole course, dating to 1938 along the Crow River in central Minnesota. A mature, tree-lined semi-private layout with public tee times, banquet facilities, and a full clubhouse, it's the anchor of golf in the Hutchinson area.",
+   awards:["MGA Registry","Long-established central Minnesota course"],
+   notes:"Black 6,784 (73.2/131) / Blue 6,474 (71.8/128) / Bronze 6,012 (69.7/123), par 71 — hole-by-hole verified via GolfLink. Replaces the phantom 'GlenEagles Golf Course' entry, which verification confirmed does NOT exist in Hutchinson. 915 Colorado St NW, Hutchinson.",sc:"crowriver"},
 
   // #71 — New Prague Golf Club · Semi-Private · 1931 †
   {id:71,rank:68,rankSrc:"MinnesotaGolf.com 2026 / MGA Registry",
