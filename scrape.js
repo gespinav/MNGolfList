@@ -1,6 +1,6 @@
 // Course-page scraper: drives the system Chrome via puppeteer-core.
 // Usage: node scrape.js <slug> <url> [waitMs]
-// Writes /tmp/shots/<slug>.png and prints rendered visible text (trimmed).
+// Writes shots/<slug>.png and prints rendered visible text (trimmed).
 const puppeteer = require('puppeteer-core');
 const fs = require('fs');
 
@@ -11,12 +11,12 @@ const UA = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Geck
   const [,, slug, url, waitMsArg] = process.argv;
   if (!slug || !url) { console.error('usage: node scrape.js <slug> <url> [waitMs]'); process.exit(2); }
   const waitMs = parseInt(waitMsArg || '3500');
-  fs.mkdirSync('/tmp/shots', { recursive: true });
+  fs.mkdirSync('shots', { recursive: true });
 
   const browser = await puppeteer.launch({
     executablePath: CHROME,
     headless: 'new',
-    args: ['--no-sandbox','--disable-gpu','--disable-dev-shm-usage','--hide-scrollbars','--window-size=1366,2200'],
+    args: ['--no-sandbox','--disable-gpu','--disable-dev-shm-usage','--hide-scrollbars','--window-size=1366,2200','--user-data-dir=/tmp/chrome-prof-'+process.pid+'-'+Date.now()],
   });
   try {
     const page = await browser.newPage();
@@ -30,7 +30,7 @@ const UA = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Geck
       status = 'goto-error: ' + e.message.split('\n')[0];
     }
     await new Promise(r => setTimeout(r, waitMs));
-    const shot = `/tmp/shots/${slug}.png`;
+    const shot = `shots/${slug}.png`;
     await page.screenshot({ path: shot, fullPage: true }).catch(e => console.error('shot err', e.message));
     // Pull visible text, collapse whitespace
     const text = await page.evaluate(() => (document.body ? document.body.innerText : '')).catch(() => '');
