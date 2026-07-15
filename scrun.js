@@ -28,7 +28,8 @@ function parse(text,scKey,source){
   const targets=JSON.parse(fs.readFileSync(process.argv[2],'utf8'));
   const start=parseInt(process.argv[3]||'0'),count=parseInt(process.argv[4]||'99');
   const slice=targets.slice(start,start+count);
-  const browser=await puppeteer.launch({executablePath:CHROME,headless:'new',args:['--no-sandbox','--disable-gpu','--disable-dev-shm-usage','--window-size=1366,2400']});
+  const prof='/tmp/chrome-prof-'+process.pid+'-'+Date.now();
+  const browser=await puppeteer.launch({executablePath:CHROME,headless:'new',args:['--no-sandbox','--disable-gpu','--disable-dev-shm-usage','--window-size=1366,2400','--user-data-dir='+prof]});
   for(const t of slice){const page=await browser.newPage();
     try{await page.setUserAgent(UA);await page.setViewport({width:1366,height:2400});
       let status='n/a';try{const r=await page.goto(t.url,{waitUntil:'networkidle2',timeout:38000});status=r?r.status():'no-resp';}catch(e){status='goto-err';}
