@@ -59,6 +59,12 @@ yds/par hole data). islandpine cached in /tmp/fix3.txt. Lesson: NEVER use `[\s\S
 entries — anchor replacements to a single entry's exact text via unique holes-array match.
 Par-fix approach going forward: read current entry, Edit the specific holes array by exact string.
 
+## OFFICIAL-SITE AUDIT PROGRESS (top-ranked hand-entered cards)
+- Batch 1: #10 Jewel ✅current, #11 Keller ✅current, #3 Madden's ✏️(Tour slope 148→143), #7 Dacotah ✏️(74.6/135→74.8/145 + corrected holes)
+- Batch 2: #12 Wedgewood ✏️(filled N/A tee ratings 73.3/131 etc), #18 Wilds ✏️(Weiskopf 74.3/150→74.2/147),
+  #19 Stonebrooke ⚠️(tees correct 6475/71 but hole yardages sum ~6625 — ~150y drift; GolfLink grid corrupted w/ par-3 course, left as-is)
+- Remaining N/A tee ratings to fill: bemidji, bellwood, applewoodhills, albionridges, craguns, atikwa, braemar
+
 ## STILL TO DO
 - Tier-1 broken: #48 Applewood Hills (holesum 3896 — partial capture, re-scrape); #25 Loggers Trail (6872 — verify, likely fine)
 - Tier-2 PAR MISMATCH (16) — for each, determine which side is right via official card, fix the wrong one:
