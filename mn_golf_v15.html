@@ -1555,6 +1555,10 @@ function getTerrainSVG(id){
 }
 
 const scorecards = {
+  richvalley:{source:"18Birdies — Blue/Red 18",tees:[{name:"Blue",yds:6642,rating:"69.3",slope:120,color:"#1a4a8a"},{name:"White",yds:6100,rating:"67.0",slope:115,color:"#ddd"}],
+    holes:[[332,4],[175,3],[340,4],[364,4],[221,3],[330,4],[541,5],[497,5],[401,4],[181,3],[392,4],[228,3],[524,5],[327,4],[379,4],[457,4],[495,4],[458,4]]},
+  thewendigo:{source:"mygolfscorecards — Gold tees",tees:[{name:"Gold",yds:6203,rating:"69.0",slope:132,color:"#b8860b"}],
+    holes:[[280,4],[374,4],[498,5],[296,4],[523,5],[374,4],[180,3],[396,4],[193,3],[507,5],[381,4],[401,4],[154,3],[347,4],[371,4],[155,3],[485,5],[288,4]]},
   littlecrowresort:{source:"18Birdies — Oaks/Pines 18",tees:[{name:"Blue",yds:6601,rating:"72.3",slope:139,color:"#1a4a8a"},{name:"White",yds:6200,rating:"70.4",slope:132,color:"#ddd"}],
     holes:[[400,4],[150,3],[375,4],[353,4],[512,5],[193,3],[366,4],[535,5],[360,4],[375,4],[195,3],[405,4],[507,5],[176,3],[395,4],[369,4],[350,4],[585,5]]},
   thepinesatgrandv:{source:"GolfPass — Woods/Marsh 18",tees:[{name:"Green",yds:6890,rating:"73.6",slope:141,color:"#2a6a2a"},{name:"White",yds:6172,rating:"70.4",slope:135,color:"#ddd"}],
@@ -2671,14 +2675,14 @@ const courses = [
   {id:68,rank:65,rankSrc:"MinnesotaGolf.com 2026 / MGA Registry",
    name:"Rich Valley Golf Club",city:"Rosemount",region:"metro",types:["daily"],
    lat:44.7388,lng:-93.1238,
-   designer:"Unknown",yr:1965,par:72,yds:"6,412",rating:"70.2/121",
+   designer:"Ray Rahn (nines, 1988)",yr:1965,par:71,yds:"6,642",rating:"69.3/120",
    fee:"$20–$38",phone:"(651) 437-2077",
    website:"https://www.richvalleygc.com/",scorecardUrl:"https://www.richvalleygc.com/",
    gd100:false,gpRank:null,
    tags:["South Metro","Affordable","Valley Views","Classic Layout","Dakota County","Rosemount"],
    desc:"Rich Valley Golf Club occupies the gently rolling terrain of Rosemount in Dakota County. A straightforward public layout at affordable green fees, it has served south metro golfers for decades with classic parkland design and well-tended conditions — a reliable local favorite at modest rates.",
    awards:["MGA Registry"],
-   notes:"† Verify website, phone number, and current rating/slope against MGA registry before launch.",sc:null},
+   notes:"Blue/Red 18: 6,642 (69.3/120), par 71 — hole-by-hole verified via 18Birdies. 27-hole facility (Blue/Red/White nines; Red by Ray Rahn 1988). Phone & website confirmed.",sc:"richvalley"},
 
   // #69 — Pebble Lake Golf Club · 1938 †
   {id:69,rank:66,rankSrc:"GolfPass 2026 / MinnesotaGolf.com 2026",
@@ -3058,7 +3062,7 @@ const courses = [
    tags:["Daily Fee","Northern MN","Joel Goldstrand","Grand Rapids","Championship","Wooded"],
    desc:"A Joel Goldstrand championship course in Grand Rapids carved through northern Minnesota forest with elevation and water. One of the Iron Range region's best public tests, playing around 6,600–6,800 yards.",
    awards:["Verified Minnesota public course (2026 research)"],
-   notes:"~6,600–6,756 yds, par 72, ~72.9/137. 20108 Golf Crest Rd, Grand Rapids 55744. Designer (Goldstrand) & phone (218) 327-2211 confirmed; booking via Grand Slam Golf. † Official domain unresolved and yardage/rating vary by source (GolfLink 6,598 vs others 6,756) — verify before launch.",sc:null},
+   notes:"Par 72. Scorecard = Gold tees 6,203 (hole-by-hole verified via mygolfscorecards); Championship plays ~6,756. 20108 Golf Crest Rd, Grand Rapids. Designer (Goldstrand) & phone (218) 327-2211 confirmed. † Longer-tee hole yardages still to source.",sc:"thewendigo"},
 
   // #97 — Tianna Country Club · architect undocumented · 1922
   {id:97,rank:93,rankSrc:"Web-verified 2026 (GolfLink/official)",
