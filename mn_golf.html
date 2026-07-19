@@ -1655,7 +1655,10 @@ edinburghusa:{source:"GolfLink verified 2026",tees:[{name:"Black",yds:6904,ratin
     holes:[[371,4],[509,5],[133,3],[510,5],[143,3],[210,3],[508,5],[384,4],[407,4],[499,5],[385,4],[399,4],[181,3],[504,5],[413,4],[195,3],[429,4],[405,4]]},
   majesticoaksgold:{source:"GolfLink verified 2026",tees:[{name:"Blue",yds:7073,rating:"75.3",slope:137,color:"#1a4a8a"},{name:"Green",yds:6818,rating:"74.2",slope:135,color:"#446644"},{name:"Gold",yds:6394,rating:"72.3",slope:131,color:"#b8860b"},{name:"Black",yds:5991,rating:"70.4",slope:127,color:"#222"},{name:"Silver (L)",yds:5148,rating:"71.6",slope:124,color:"#222"}],
     holes:[[538,5],[375,4],[434,4],[220,3],[413,4],[550,5],[402,4],[150,3],[415,4],[410,4],[444,4],[200,3],[539,5],[412,4],[188,3],[542,5],[412,4],[429,4]]},
-  theodorewirth:{source:"minneapolisparks.org / GolfLink 2026 (regulation 18)",tees:[{name:"Blue",yds:6584,rating:"71.9",slope:128,color:"#1a4a8a"},{name:"White",yds:6295,rating:"70.4",slope:125,color:"#ddd"},{name:"Gold",yds:5666,rating:"67.6",slope:120,color:"#b8860b"},{name:"Red",yds:5285,rating:"70.6",slope:122,color:"#8a1a1a"}],par:72},
+  theodorewirth:{source:"minneapolisparks.org / offcourse verified 2026 (regulation 18)",tees:[{name:"Blue",yds:6584,rating:"71.9",slope:128,color:"#1a4a8a"},{name:"White",yds:6295,rating:"70.4",slope:125,color:"#ddd"},{name:"Gold",yds:5666,rating:"67.6",slope:120,color:"#b8860b"},{name:"Red",yds:5285,rating:"70.6",slope:122,color:"#8a1a1a"}],
+    // [Blue_yds, par, hcp] — par 72 (front 36, back 36)
+    holes:[[378,4,7],[489,5,1],[333,4,13],[224,3,15],[446,4,3],[492,5,11],[397,4,9],[160,3,17],[391,4,5],
+      [380,4,8],[358,4,14],[518,5,2],[422,4,6],[372,4,12],[491,5,4],[180,3,16],[407,4,10],[146,3,18]]},
   inverwood:{source:"GolfLink verified 2026",tees:[{name:"Blue",yds:6724,rating:"72.8",slope:142,color:"#1a4a8a"},{name:"White",yds:6195,rating:"70.4",slope:138,color:"#ddd"},{name:"Gold",yds:5795,rating:"68.6",slope:134,color:"#b8860b"},{name:"Red (L)",yds:5175,rating:"70.9",slope:124,color:"#8a1a1a"}],
     holes:[[536,5],[349,4],[363,4],[352,4],[409,4],[206,3],[537,5],[453,4],[167,3],[512,5],[351,4],[240,3],[351,4],[540,5],[389,4],[385,4],[190,3],[394,4]]},
   territory:{source:"GolfLink verified 2026",tees:[{name:"Silver",yds:6951,rating:"73.8",slope:135,color:"#222"},{name:"Black",yds:6550,rating:"71.5",slope:132,color:"#222"},{name:"Blue",yds:6202,rating:"69.2",slope:127,color:"#1a4a8a"},{name:"Gold (L)",yds:5199,rating:"70.0",slope:123,color:"#b8860b"}],
@@ -1849,20 +1852,19 @@ edinburghusa:{source:"GolfLink verified 2026",tees:[{name:"Black",yds:6904,ratin
   // IMAGE 1: Dacotah Ridge — already in file as "dacotah", but image confirms data — no change needed
 
   // IMAGE 2: Wildflower Golf Course at Fair Hills (par 72)
-  wildflower:{source:"Official Wildflower Golf Course at Fair Hills scorecard — uploaded 2026 (wildflowergolfcourse.com)",
+  wildflower:{source:"GolfLink + mScorecard verified 2026 (two-source match) — Goldstrand Prairie Links",
+    // NOTE: Men's card is PAR 73 (front 36 / back 37, hole 18 is a par-5). Ladies/forward tees play par 72.
+    // Black rating 74.2/139 per official/GolfPass; other tee ratings from GolfLink.
     tees:[
-      {name:"Black", yds:6703, rating:"73.5", slope:140, color:"#222"},
-      {name:"Blue",  yds:6409, rating:"72.0", slope:139, color:"#1a4a8a"},
-      {name:"White", yds:6086, rating:"70.0", slope:135, color:"#ddd"},
-      {name:"Gold",  yds:5365, rating:"66.6", slope:119, color:"#b8860b"},
-      {name:"Red",   yds:4998, rating:"70.0", slope:123, color:"#8a1a1a"},
+      {name:"Black",  yds:7000, rating:"74.2", slope:139, color:"#222"},
+      {name:"Blue",   yds:6551, rating:"72.6", slope:129, color:"#1a4a8a"},
+      {name:"Gold",   yds:6191, rating:"70.9", slope:126, color:"#b8860b"},
+      {name:"Maroon", yds:5824, rating:"69.3", slope:123, color:"#8a1a1a"},
     ],
+    // [Black_yds, par] — par 73 (front 36, back 37)
     holes:[
-      // [Black_yds, par, hcp_men]
-      [469,5,15],[477,4,1],[531,5,3],[162,3,17],[376,4,5],
-      [339,4,9],[415,3,7],[200,4,13],[395,4,11],
-      [401,4,14],[512,5,6],[408,4,8],[361,4,12],[192,3,16],
-      [379,4,4],[406,4,2],[166,3,18],[514,5,10],
+      [348,4],[523,5],[422,4],[423,4],[473,4],[428,4],[172,3],[535,5],[192,3],
+      [426,4],[165,3],[548,5],[402,4],[566,5],[328,4],[410,4],[217,3],[422,5],
     ]},
 
   genevapondisland:{source:"Official Geneva Golf Club scorecard — uploaded 2026 (genevagolfclub.com)",
@@ -1886,27 +1888,33 @@ edinburghusa:{source:"GolfLink verified 2026",tees:[{name:"Black",yds:6904,ratin
       [466,4,8],[159,3,1],[551,5,9],[531,4,6],
     ]},
 
-  // minniowa: no verified hole-by-hole scorecard — previous data was mis-attributed (was Thief River data)
-  minniowa:{source:"GolfLink verified totals only — hole-by-hole not confirmed",
+  ridgessandcreek:{source:"offcourse verified 2026 / official Ridges at Sand Creek scorecard PDF",
     tees:[
-      {name:"Blue",  yds:6334, rating:"70.5", slope:120, color:"#1a4a8a"},
-      {name:"White", yds:6114, rating:"69.5", slope:118, color:"#ddd"},
-      {name:"Red",   yds:5589, rating:"72.3", slope:123, color:"#8a1a1a"},
+      {name:"Black", yds:6936, rating:"73.6", slope:137, color:"#1a1a1a"},
+      {name:"Blue",  yds:6553, rating:"71.8", slope:134, color:"#1a4a8a"},
+      {name:"White", yds:6116, rating:"69.8", slope:130, color:"#ddd"},
+      {name:"Gold",  yds:5739, rating:"68.1", slope:126, color:"#b8860b"},
+      {name:"Red",   yds:5136, rating:"70.2", slope:123, color:"#8a1a1a"},
+    ],
+    // [Black_yds, par, hcp] — par 72 (front 36, back 36)
+    holes:[
+      [550,5,5],[415,4,13],[180,3,17],[447,4,7],[202,3,15],[425,4,3],[518,5,11],[430,4,9],[452,4,1],
+      [600,5,4],[219,3,12],[394,4,8],[459,4,2],[297,4,14],[110,3,18],[559,5,6],[163,3,16],[516,5,10],
     ]},
 
   blueberrypines:{source:"Official Blueberry Pines Golf Club scorecard — uploaded 2026",
     // Data from old v11 Image 3 (confirmed as Blueberry Pines by user)
     tees:[
-      {name:"Black", yds:6703, rating:"73.5", slope:140, color:"#222"},
-      {name:"Blue",  yds:6409, rating:"72.0", slope:139, color:"#1a4a8a"},
-      {name:"White", yds:6086, rating:"70.0", slope:135, color:"#ddd"},
-      {name:"Gold",  yds:5365, rating:"66.6", slope:119, color:"#b8860b"},
-      {name:"Red",   yds:4998, rating:"70.0", slope:123, color:"#8a1a1a"},
+      {name:"Black", yds:6703, rating:"72.5", slope:136, color:"#222"},
+      {name:"Blue",  yds:6409, rating:"71.2", slope:135, color:"#1a4a8a"},
+      {name:"White", yds:6166, rating:"69.9", slope:131, color:"#ddd"},
+      {name:"Gold",  yds:5365, rating:"66.4", slope:124, color:"#b8860b"},
+      {name:"Red",   yds:4988, rating:"69.3", slope:123, color:"#8a1a1a"},
     ],
     holes:[
       // [Black_yds, par, hcp_men]
       [469,5,15],[477,4,1],[531,5,3],[162,3,17],[376,4,5],
-      [339,4,9],[415,3,7],[200,4,13],[395,4,11],
+      [339,4,9],[415,4,7],[200,3,13],[395,4,11],
       [401,4,14],[512,5,6],[408,4,8],[361,4,12],[192,3,16],
       [379,4,4],[406,4,2],[166,3,18],[514,5,10],
     ]},
@@ -2228,6 +2236,17 @@ edinburghusa:{source:"GolfLink verified 2026",tees:[{name:"Black",yds:6904,ratin
       [370,4,12],[390,4,16],[445,4,2],[362,4,10],[183,3,14],[543,5,8],[419,4,4],[166,3,18],[566,5,6]
     ]
   },
+  edinburghusa:{source:"GolfLink verified 2026 (Robert Trent Jones II — 2014 renovation)",
+    tees:[
+      {name:"Black", yds:6904, rating:"73.4", slope:139, color:"#1a1a1a"},
+      {name:"Blue",  yds:6383, rating:"71.2", slope:132, color:"#1a4a8a"},
+      {name:"White", yds:5858, rating:"68.8", slope:125, color:"#ddd"},
+    ],
+    holes:[
+      // [Black_yds, par, hcp_men] — par 72 (front 36, back 36)
+      [543,5,7],[193,3,11],[420,4,1],[514,5,9],[350,4,15],[195,3,5],[440,4,3],[171,3,13],[520,5,17],
+      [383,4,14],[435,4,4],[550,5,12],[430,4,8],[203,3,16],[544,5,6],[165,3,18],[394,4,2],[454,4,10],
+    ]},
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -2448,9 +2467,9 @@ const courses = [
   {id:25,rank:25,rankSrc:"GolfPass #24 (2026)",name:"Loggers Trail Golf Club",city:"Stillwater",region:"metro",types:["daily"],lat:45.0498,lng:-92.8641,designer:"Mike Fermoyle, John Harris, Dave Tentis, Bev Vanstrum",yr:2003,par:72,yds:"7,113",rating:"74.5/133",fee:"$54–$87",phone:"651-439-7860",website:"https://www.loggerstrail.com/",scorecardUrl:"https://course.bluegolf.com/bluegolf/course/course/loggerstrailgc/detailedscorecard.htm",gd100:false,gpRank:"#24 GolfPass 2026",tags:["Stillwater","Wooded","Popular","Most-Reviewed"],desc:"One of the most-reviewed public courses in Minnesota with 440 GolfPass reviews. Wooded fairways in the Stillwater area. GolfPass rating 4.52/5. Consistently excellent in the St. Croix Valley corridor.",awards:["GolfPass #24 MN 2026 (4.52/5, 440 reviews)","Among the most-reviewed courses in Minnesota"],notes:"Scorecard verified from official Loggers Trail Golf Club card (uploaded 2026). Pro / Champ / Regular / Forward tees. Par 72. Front 9 OUT: 3,507 (Pro). Hole 18 yardage pending.",sc:"loggerstrail"},
   {id:26,rank:26,rankSrc:"GolfPass #25 (2026)",name:"Headwaters Golf Club",city:"Park Rapids",region:"north",types:["semi"],lat:46.9212,lng:-95.0683,designer:"Joel Goldstrand (1996 expansion to 18)",yr:1926,par:72,yds:"6,573",rating:"72.1/132",fee:"$45–$62",phone:"218-732-4832",website:"https://www.headwaters.golf/",scorecardUrl:"https://www.headwaters.golf/club-info/scorecard/",gd100:false,gpRank:"#25 GolfPass 2026",tags:["Park Rapids","Northern MN","Repeat Visitor Favorite","Semi-Private"],desc:"Exceptional repeat visitor loyalty with GolfPass rating 4.67/5 from 234 reviews — remarkable for a semi-private northern Minnesota course. Well-maintained, right amount of challenge.",awards:["GolfPass #25 MN 2026 (4.67/5, 234 reviews)"],notes:"Scorecard verified from official Headwaters Golf Club card (uploaded 2026). Blue 6,573 (72.1/132) / White 6,267 (70.8/128) / WH-GD 5,971 (69.4/126) / Gold 5,638 (67.9/123) / Red 5,345 (66.6/120). Par 72.",sc:"headwaters"},
   {id:27,rank:27,rankSrc:"MinnesotaGolf.com #11",name:"The Meadows at Mystic Lake",city:"Prior Lake",region:"metro",types:["resort","daily","casino"],lat:44.7212,lng:-93.4563,designer:"Garrett Gill & Paul Miller",yr:2005,par:72,yds:"7,144",rating:"74.6/146",fee:"$55–$110",phone:"952-233-5533",website:"https://www.golfthemeadows.com/",scorecardUrl:"https://www.golfthemeadows.com/golf/",gd100:false,gpRank:null,tags:["Casino Resort","Prior Lake","Mystic Lake","Award-Winning"],desc:"An award-winning casino resort course adjacent to Mystic Lake Casino, designed by Garrett Gill and Paul Miller. Unique, challenging, and scenic experience with water features and creative bunkering. Premier Twin Cities casino golf destination.",awards:["MGA Featured Enhanced Listing","MinnesotaGolf.com #11 voter ranking"],notes:"Black 7,144 (74.6/146) / Blue 6,668 (72.3/142) / White 6,318 (70.8/139) / Green 5,777 (70.8/133) / Gold 4,839 (71.2/131). 80 bunkers. 13 holes with water. Adjacent to Mystic Lake Casino — lodging packages available.",sc:"mysticlake"},
-  {id:28,rank:28,rankSrc:"MinnesotaGolf.com #12",name:"Wildflower Golf Course at Fair Hills",city:"Detroit Lakes",region:"north",types:["resort","daily"],lat:46.8273,lng:-95.8451,designer:"Joel Goldstrand",yr:1993,par:72,yds:"7,000",rating:"73.5/140",fee:"$55–$95",phone:"888-752-9945",website:"https://wildflowergolfcourse.com/",scorecardUrl:"https://wildflowergolfcourse.com/maps/scorecard/",gd100:false,gpRank:null,tags:["Joel Goldstrand","Detroit Lakes","Lake Country","Resort","Par 72","5 Tee Options"],desc:"Joel Goldstrand's classic resort design amid the lakes and pines of the Detroit Lakes area at Fair Hills Resort. Scenic fairways through natural northwest Minnesota landscape. A quintessential Minnesota resort golf experience.",awards:["MinnesotaGolf.com #12 voter ranking"],notes:"Black 6,703 (73.5/140) / Blue 6,409 (72.0/139) / White 6,086 (70.0/135) / Gold 5,365 (66.6/119) / Red 4,998 (70.0/123). Par 72. Joel Goldstrand design at Fair Hills Resort, Detroit Lakes area.",sc:"wildflower"},
+  {id:28,rank:28,rankSrc:"MinnesotaGolf.com #12",name:"Wildflower Golf Course at Fair Hills",city:"Detroit Lakes",region:"north",types:["resort","daily"],lat:46.8273,lng:-95.8451,designer:"Joel Goldstrand",yr:1993,par:73,yds:"7,000",rating:"74.2/139",fee:"$55–$95",phone:"888-752-9945",website:"https://wildflowergolfcourse.com/",scorecardUrl:"https://wildflowergolfcourse.com/maps/scorecard/",gd100:false,gpRank:null,tags:["Joel Goldstrand","Detroit Lakes","Lake Country","Resort","Par 73","5 Tee Options"],desc:"Joel Goldstrand's classic resort design amid the lakes and pines of the Detroit Lakes area at Fair Hills Resort. Scenic fairways through natural northwest Minnesota landscape. A quintessential Minnesota resort golf experience.",awards:["MinnesotaGolf.com #12 voter ranking"],notes:"Scorecard verified from GolfLink + mScorecard (uploaded 2026). Black 7,000 (74.2/139) / Blue 6,551 (72.6/129) / Gold 6,191 (70.9/126) / Maroon 5,824 (69.3/123). Men's par 73 (front 36 / back 37); ladies/forward tees play par 72. Joel Goldstrand 'Prairie Links' design at Fair Hills Resort.",sc:"wildflower"},
   {id:29,rank:29,rankSrc:"MinnesotaGolf.com #13",name:"Superior National Golf Course",city:"Lutsen",region:"north",types:["resort","daily"],lat:47.6548,lng:-90.6789,designer:"Don Herfort/Kevin Norby (1991, original 18) / Joel Goldstrand (1999, Canyon nine) / Jeff Brauer (2017–18 reno)",yr:1991,par:71,yds:"6,763",rating:"73.5/138",fee:"$55–$105",phone:"218-663-7195",website:"https://www.superiornational.com/",scorecardUrl:"https://www.superiornational.com/scorecard/",gd100:false,gpRank:null,tags:["Lake Superior Views","27 Holes","North Shore","$4.5M Renovation"],desc:"Carved into the dramatic North Shore landscape near Lutsen with sweeping Lake Superior views and the Sawtooth Mountains. Joel Goldstrand's 27-hole facility underwent a $4.5M renovation by Jeff Brauer. Among the most scenic golf settings in the Midwest.",awards:["MinnesotaGolf.com #13 voter ranking","$4.5M Jeff Brauer renovation","Most scenic Minnesota golf course"],notes:"Premier 18 (River + Mountain nines): Black 6,763 (73.5/138) / Gold 6,392 (71.8/132) / Blue 5,857 (68.9/127) / White 5,041 (65.1/121) / Red 4,238 (64.7/111). Par 71. $4.5M Brauer renovation. Lutsen Mountains resort area.",sc:"superiornational"},
-  {id:30,rank:30,rankSrc:"MinnesotaGolf.com #15",name:"Minniowa Golf Club",city:"Elmore",region:"outstate",types:["daily"],lat:43.4989,lng:-94.0812,designer:"Original designer not publicly documented (course opened 1971)",yr:1971,par:72,yds:"6,334",rating:"70.5/120",fee:"~$30",phone:"507-943-3149",website:"https://www.mngolf.org/Course/Minniowa_Golf_Club",scorecardUrl:"https://www.mngolf.org/Course/Minniowa_Golf_Club",gd100:false,gpRank:null,tags:["Southern MN","Hidden Gem","Affordable","1971 Classic","Blue 6,334","Par 72"],desc:"A classic 1971 southern Minnesota daily-fee course consistently voted among the top public tracks by MinnesotaGolf.com users. An accessible, affordable hidden gem beloved by regional golfers.",awards:["MinnesotaGolf.com #15 voter ranking"],notes:"Blue 6,334 (70.5/120) / White 6,114 (69.5/118) / Red 5,589 (72.3/123). Par 72. ⚠ Hole-by-hole not individually confirmed — tee totals from GolfLink.",sc:"minniowa"},
+  {id:105,rank:30,rankSrc:"MinnesotaGolf.com featured / Midwest GCOA Course of the Year",name:"The Ridges at Sand Creek",city:"Jordan",region:"metro",types:["daily"],lat:44.6346,lng:-93.6085,designer:"Joel Goldstrand",yr:2000,par:72,yds:"6,936",rating:"73.6/137",fee:"$39–$59",phone:"952-492-2644",website:"https://www.ridgesatsandcreek.com/",scorecardUrl:"https://www.ridgesatsandcreek.com/wp-content/uploads/2025/02/Scorecard.pdf",gd100:false,gpRank:null,tags:["Joel Goldstrand","South Metro","Championship Layout","Bentgrass Greens","Sand Creek Wetlands","5 Tee Options"],desc:"Joel Goldstrand's championship design in the south metro near Jordan, opened in 2000 and named Midwest Golf Course Owners Association 'Golf Course of the Year' in 2010. A distinctive routing winds across wooded ridges and Sand Creek wetlands — including a reachable 600-yard par-5 10th — with large, true bentgrass greens. Five tee options from 5,136 to 6,936 yards. GolfPass reviewers call it a south-metro favorite for its design diversity.",awards:["Midwest Golf Course Owners Association — Golf Course of the Year 2010","Only Minnesota public course named to Golf World Readers' Choice Top 50","Joel Goldstrand championship design"],notes:"Scorecard verified from official card / offcourse (uploaded 2026). Black 6,936 (73.6/137) / Blue 6,553 (71.8/134) / White 6,116 (69.8/130) / Gold 5,739 (68.1/126) / Red 5,136 (70.2/123). Par 72. 21775 Ridges Dr, Jordan. Walking $39 wkdy / $44 wknd; carts +$15/person.",sc:"ridgessandcreek"},
   {id:31,rank:31,rankSrc:"MinnesotaGolf.com #16",name:"Blueberry Pines Golf Club",city:"Menahga",region:"north",types:["resort","daily"],lat:46.8124,lng:-95.0936,designer:"Joel Goldstrand",yr:1990,par:72,yds:"6,703",rating:"73.5/140",fee:"$45–$80",phone:"218-564-4653",website:"https://www.blueberrypinesgolf.com/",scorecardUrl:"https://www.blueberrypinesgolf.com/",gd100:false,gpRank:null,tags:["Joel Goldstrand","Pine Forest","Central MN Lakes","Resort Golf","Black 6,703","5 Tee Options"],desc:"Joel Goldstrand's design winding through blue pine forests of central Minnesota near Menahga. Beautiful woodland course delivering a genuine north-woods golf atmosphere.",awards:["MinnesotaGolf.com #16 voter ranking","Joel Goldstrand woodland design"],notes:"Black 6,703 (73.5/140) / Blue 6,409 (72.0/139) / White 6,086 / Gold 5,365 / Red 4,998. Par 72. Joel Goldstrand woodland design. Stay and play packages available.",sc:"blueberrypines"},
   {id:32,rank:32,rankSrc:"MGA Enhanced / Featured",name:"Braemar Golf Course",city:"Edina",region:"metro",types:["municipal","daily"],lat:44.8843,lng:-93.3921,designer:"Richard Mandell",yr:2019,par:72,yds:"6,884",rating:"72.7/128",fee:"$40–$75",phone:"952-903-5750",website:"https://braemargolf.com/",scorecardUrl:"https://braemargolf.com/",gd100:false,gpRank:null,tags:["Edina","18+9 Holes","Municipal","Indoor Practice","Par-3 Course"],desc:"Edina city facility featuring 18-hole championship course, 9-hole par-3 layout, and comprehensive indoor and outdoor practice facilities. MGA-featured for accessibility and quality. One of the Twin Cities' most complete public golf destinations.",awards:["MGA Featured Enhanced Listing","Edina Parks & Recreation signature municipal facility"],notes:"Championship 6,934 / E 6,418 / D 5,967 / I 5,521 / N 5,029 / A 4,234. Par 72. Redesigned by Richard Mandell, reopened 2019. 2025 MGA Member Club of the Year. Academy 9 par-3, Golf Dome with Toptracer, 68-stall driving range. PGA hosted 1969 MN Classic.",sc:"braemar"},
   {id:33,rank:33,rankSrc:"MGA Enhanced / Featured",name:"Geneva Golf Club",city:"Alexandria",region:"outstate",types:["daily"],lat:45.8851,lng:-95.4023,designer:"Joel Goldstrand",yr:2000,par:71,yds:"6,921",rating:"73.9/137",fee:"$45–$80",phone:"320-762-7089",website:"https://www.genevagolfclub.com/",scorecardUrl:"https://www.genevagolfclub.com/",gd100:false,gpRank:null,tags:["27 Holes","Alexandria","Lakes Region","MGA Featured","Ponds/Island/Marsh Nines","Thompson Golf Group"],desc:"A 27-hole public facility recognized by the MGA as one of the finest public layouts in the Alexandria lakes region. Three nines combinable for variety, set amid central Minnesota's lakes and rolling terrain.",awards:["MGA Featured Enhanced Listing"],notes:"27 holes: Ponds (par 35) + Island (par 36) + Marsh (par 37). Primary 18 = Ponds+Island par 71, Black 6,921 (73.9/137). Thompson Golf Group managed. Black/Blue/White/Gold/Red tees.",sc:"genevapondisland"},
@@ -2483,15 +2502,15 @@ const courses = [
   {id:51,rank:51,rankSrc:"GD Best In State / GolfPass 2026",
    name:"Edinburgh USA",city:"Brooklyn Park",region:"metro",types:["daily"],
    lat:45.1075,lng:-93.3693,
-   designer:"Robert Trent Jones Jr.",yr:1987,par:72,yds:"6,727",rating:"73.1/141",
+   designer:"Robert Trent Jones Jr.",yr:1987,par:72,yds:"6,904",rating:"73.4/139",
    fee:"$55–$95",phone:"(763) 315-8550",
-   website:"https://www.edinburghusa.org",
-   scorecardUrl:"https://www.edinburghusa.org/golf/course-information",
+   website:"https://www.edinburghusa.com",
+   scorecardUrl:"https://www.edinburghusa.com/course/",
    gd100:false,gpRank:"Top 25 MN",
    tags:["Metro","Championship Layout","Island Fairway","RTJ Jr. Design","Award-Winning","Brooklyn Park"],
    desc:"Robert Trent Jones Jr.'s signature Minnesota design features a dramatic 17th hole whose fairway is an island surrounded by water — one of the state's most photographed approach shots. Edinburgh hosts a 40,000 sq ft triple green and has hosted numerous MSGA and Minnesota PGA section events. Owned and operated by the City of Brooklyn Park.",
    awards:["Golf Digest Best in State 2025–26","GolfPass Golfers' Choice 2026","Golf Magazine Top Courses You Can Play"],
-   notes:"Back 6,727 (73.1/141) / Middle 6,240 (70.9/136) / Forward 5,537 (71.9/128). ‡ Designer, year, rating/slope confirmed. Reservations open 14 days in advance for non-residents.",sc:"edinburghusa"},
+   notes:"Scorecard verified from GolfLink (uploaded 2026). Black 6,904 (73.4/139) / Blue 6,383 (71.2/132) / White 5,858 (68.8/125). Par 72. RTJ II design, 2014 renovation added new bunkers, tees and greens. Reservations open 14 days in advance for non-residents.",sc:"edinburghusa"},
 
   // #52 — Willingers Golf Club · Garrett D. Gill & Paul Miller · 1992 ‡
   {id:52,rank:52,rankSrc:"GD Best In State / GolfPass 2026",
@@ -4753,8 +4772,8 @@ function confirmDeleteAllData(){
 // ─────────────────────────────────────────────────────────────────────────────
 if ('serviceWorker' in navigator) {
   const swCode = `
-    const SHELL_CACHE = 'mn-golf-shell-v15';
-    const TILE_CACHE  = 'mn-golf-tiles-v15';
+    const SHELL_CACHE = 'mn-golf-shell-v1';
+    const TILE_CACHE  = 'mn-golf-tiles-v1';
     const TILE_TTL    = 7 * 24 * 60 * 60 * 1000; // 7 days in ms
     const SHELL_URLS  = [location.href];
 
