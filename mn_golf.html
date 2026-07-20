@@ -8,17 +8,21 @@
 <!-- ── SECURITY: Content Security Policy ── -->
 <meta http-equiv="Content-Security-Policy" content="
   default-src 'self';
-  script-src 'self' 'unsafe-inline';
+  script-src 'self' 'unsafe-inline' https://www.gstatic.com https://www.google.com https://apis.google.com;
   style-src 'self' 'unsafe-inline';
   font-src 'self' data:;
-  img-src 'self' data: blob: https://tile.openstreetmap.org https://*.tile.openstreetmap.org;
-  connect-src 'self';
+  img-src 'self' data: blob: https://tile.openstreetmap.org https://*.tile.openstreetmap.org https://*.googleusercontent.com https://www.gstatic.com https://ssl.gstatic.com;
+  connect-src 'self' https://*.googleapis.com https://*.firebaseio.com https://*.firebaseapp.com;
+  frame-src https://*.firebaseapp.com https://accounts.google.com https://www.google.com;
   manifest-src 'self' data:;
   worker-src 'self' blob:;
   frame-ancestors 'none';
   base-uri 'self';
   form-action 'none';
 ">
+<!-- Firebase/Google hosts above are ONLY contacted when a user chooses to sign in.
+     The Firebase SDK is lazy-loaded on sign-in intent, so visitors who never sign in
+     make zero third-party requests (fonts + Leaflet are fully self-hosted). -->
 <!-- SECURITY: never leak the page URL / referrer to tile or CDN hosts -->
 <meta name="referrer" content="no-referrer">
 
@@ -978,7 +982,7 @@ select:focus-visible,
   <strong>Sources:</strong> Golf Digest Best In State 2025–26 · GolfPass/GolfNow Golfers' Choice 2026 · MinnesotaGolf.com 2026 Voter Rankings · MGA Course Registry (mngolf.org) · GolfLink · BluGolf · 18Birdies · GolfAdvisor · Course official websites<br>
   <strong>Maps:</strong> © OpenStreetMap contributors — embedded via openstreetmap.org<br>
   <strong>Course Layouts:</strong> Schematic diagrams generated from verified published hole data. Not to scale. Always consult official yardage books on-site.<br>
-  <strong>Your Data:</strong> All personal data (played status, rounds, photos) stored locally in your browser only. We collect nothing.
+  <strong>Your Data:</strong> Local-first — played status, rounds &amp; photos live in your browser. Signing in is optional and only syncs played/rounds/handicap privately across your devices; photos always stay on-device.
   <br>
   <button class="footer-data-btn" onclick="openDataPanel()" aria-label="Open data privacy and export panel">🔒 Your Data &amp; Privacy</button>
 </div>
@@ -988,15 +992,13 @@ select:focus-visible,
   <div class="data-panel-modal" id="data-panel-modal">
     <button class="dpm-close" onclick="closeDataPanel()" aria-label="Close data panel">✕</button>
     <div class="dpm-title" id="dpm-title-text">🔒 Your Data &amp; Privacy</div>
-    <p class="dpm-sub">Minnesota Public Golf stores all personal data on your device only. We collect no personal information and never share or sell your data.</p>
+    <p class="dpm-sub">Minnesota Public Golf is <strong>local-first</strong>: everything works on your device with no account. Signing in is optional — it only syncs your bucket list, rounds &amp; handicap privately across your own devices. We never sell your data, show ads, or run third-party trackers.</p>
 
-    <div class="dpm-row"><span class="dpm-icon">✅</span><span class="dpm-label"><strong>Courses played</strong> — stored on your device only</span></div>
-    <div class="dpm-row"><span class="dpm-icon">✅</span><span class="dpm-label"><strong>Your round history</strong> — stored on your device only</span></div>
-    <div class="dpm-row"><span class="dpm-icon">✅</span><span class="dpm-label"><strong>Your course photos</strong> — stored on your device only</span></div>
-    <div class="dpm-row"><span class="dpm-icon">❌</span><span class="dpm-label">We do not collect your name, email, or location</span></div>
-    <div class="dpm-row"><span class="dpm-icon">❌</span><span class="dpm-label">We do not sell your data to anyone, ever</span></div>
-    <div class="dpm-row"><span class="dpm-icon">❌</span><span class="dpm-label">We do not use your rounds for advertising or profiling</span></div>
-    <div class="dpm-row"><span class="dpm-icon">❌</span><span class="dpm-label">We do not run third-party trackers or analytics</span></div>
+    <div class="dpm-row"><span class="dpm-icon">✅</span><span class="dpm-label"><strong>No account needed</strong> — played, rounds &amp; handicap live on your device</span></div>
+    <div class="dpm-row"><span class="dpm-icon">☁️</span><span class="dpm-label"><strong>Optional cloud sync</strong> — if you sign in, played / rounds / handicap sync to your own private, access-controlled profile (Google Firebase). Delete it anytime from the account panel.</span></div>
+    <div class="dpm-row"><span class="dpm-icon">📵</span><span class="dpm-label"><strong>Your course photos never leave this device</strong> — they’re never uploaded, even when signed in</span></div>
+    <div class="dpm-row"><span class="dpm-icon">🔒</span><span class="dpm-label">If you never sign in, the app makes <strong>zero third-party requests</strong> (fonts &amp; maps library are self-hosted)</span></div>
+    <div class="dpm-row"><span class="dpm-icon">❌</span><span class="dpm-label">We do not sell your data, show ads, profile you, or run analytics/trackers</span></div>
 
     <hr class="dpm-divider">
     <div style="margin-bottom:14px">
@@ -1137,7 +1139,7 @@ function ensureLeaflet() {
 // ─────────────────────────────────────────────────────────────────────────────
 const STORAGE_KEY = 'mn_golf_played_v1';
 function loadPlayed(){ return new Set(safeStorageGet(STORAGE_KEY, [])); }
-function savePlayed(s){ safeStorageSet(STORAGE_KEY, [...s]); }
+function savePlayed(s){ safeStorageSet(STORAGE_KEY, [...s]); if(window.GOLF_CLOUD) window.GOLF_CLOUD.queuePush(); }
 let played = loadPlayed();
 
 function togglePlayed(id, e){
@@ -1209,7 +1211,7 @@ function updatePlayedUI(){
 // ─────────────────────────────────────────────────────────────────────────────
 const HCP_KEY = 'mn_golf_handicap_v1';
 function loadHandicap(){ return safeStorageGet(HCP_KEY, null); }
-function saveHandicap(v){ safeStorageSet(HCP_KEY, v); }
+function saveHandicap(v){ safeStorageSet(HCP_KEY, v); if(window.GOLF_CLOUD) window.GOLF_CLOUD.queuePush(); }
 let userHandicap = loadHandicap(); // null means not set
 
 // Course handicap = round(HI × (Slope/113) + (Rating − Par))
@@ -3925,7 +3927,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal()
 const ROUNDS_KEY = 'mn_golf_rounds_v1';
 const MAX_ROUNDS_PER_COURSE = 500;
 function loadRounds(){ return safeStorageGet(ROUNDS_KEY, {}); }
-function saveRounds(r){ safeStorageSet(ROUNDS_KEY, r); }
+function saveRounds(r){ safeStorageSet(ROUNDS_KEY, r); if(window.GOLF_CLOUD) window.GOLF_CLOUD.queuePush(); }
 let roundsData = loadRounds();
 
 function getCourseRounds(id){ return roundsData[id] || []; }
@@ -4854,5 +4856,664 @@ updateRoundsUI();    // total rounds count in hero
 // Photos appear on cards progressively as IDB resolves
 initPhotos();
 </script>
+<!-- ════════════════════════════════════════════════════════════════════════════
+     CLOUD ACCOUNTS (optional, opt-in) — Firebase Auth + Firestore
+     ────────────────────────────────────────────────────────────────────────────
+     Local-first by design. The Firebase SDK is LAZY-LOADED only when a user
+     chooses to sign in, so anyone who never signs in makes ZERO third-party
+     requests (fonts + Leaflet are fully self-hosted). Signed-in users sync only
+     played / rounds / handicap to their own per-user Firestore document; course
+     PHOTOS never leave the device.
+
+     ── SETUP (free, ~5 min) — the app works 100% locally until this is done ──
+       1. console.firebase.google.com → Add project.
+       2. Add a Web App; copy its firebaseConfig into GOLF_FIREBASE_CONFIG below.
+       3. Authentication → Sign-in method → enable Email/Password AND Google.
+       4. Authentication → Settings → require email verification is enforced in
+          code already; add your deploy domain under Authorized domains.
+       5. Firestore Database → Create (production mode) → paste these rules:
+            rules_version = '2';
+            service cloud.firestore {
+              match /databases/{database}/documents {
+                match /users/{userId} {
+                  allow read, write: if request.auth != null
+                    && request.auth.uid == userId
+                    && request.auth.token.email_verified == true;
+                }
+              }
+            }
+       6. (Recommended) App Check: create a reCAPTCHA v3 site key, put it in
+          GOLF_RECAPTCHA_SITE_KEY below, and set Firestore + Auth to "Enforced"
+          in the App Check console. Leave the key blank to skip App Check.
+
+     ── DEFENSE IN DEPTH (verify each in the Firebase / Google Cloud consoles) ──
+       • Firestore rules: per-user + email_verified (above) — deny by default.
+       • Browser API key restrictions: HTTP-referrer allowlist = your domains;
+         API allowlist = identitytoolkit, securetoken, firestore,
+         firebaseappcheck, firebaseinstallations.
+       • Auth authorized domains = production domains only.
+       • App Check enforced (when a reCAPTCHA key is configured).
+     The apiKey is publishable by design; the controls above are what protect it.
+     ════════════════════════════════════════════════════════════════════════════ -->
+<style>
+.gauth-btn{position:absolute;top:16px;right:16px;z-index:5;display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:rgba(26,74,26,.06);border:1px solid rgba(61,107,61,.4);color:#1a5c2e;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;cursor:pointer;border-radius:2px;min-height:40px;transition:all .18s;max-width:46vw;overflow:hidden}
+.gauth-btn:hover{border-color:var(--gold);color:var(--gold)}
+.gauth-btn .gauth-email{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:150px}
+@media (prefers-color-scheme:dark){.gauth-btn{color:#7ec87e;border-color:rgba(120,200,120,.35);background:rgba(120,200,120,.08)}}
+@media(max-width:600px){.gauth-btn{top:10px;right:10px;padding:7px 10px;font-size:10px} .gauth-btn .gauth-email{max-width:84px}}
+
+.gauth-overlay{position:fixed;inset:0;z-index:4000;background:rgba(10,16,10,.82);backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;padding:16px}
+.gauth-overlay.open{display:flex}
+.gauth-modal{background:var(--cream,#1a2018);color:#e8e0d0;max-width:420px;width:100%;border:1px solid rgba(120,180,120,.35);border-top:3px solid var(--gold,#8c6a14);border-radius:3px;box-shadow:0 24px 70px rgba(0,0,0,.55);overflow:hidden;max-height:92vh;overflow-y:auto}
+.gauth-head{background:#12200f;padding:18px 22px;border-bottom:1px solid rgba(120,180,120,.2);position:relative}
+.gauth-title{font-family:'Libre Baskerville',serif;font-size:20px;font-weight:700;color:#7ec87e}
+.gauth-sub{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:1.6px;color:rgba(230,224,208,.7);text-transform:uppercase;margin-top:4px}
+.gauth-close{position:absolute;top:14px;right:14px;background:transparent;color:rgba(230,224,208,.75);border:1px solid rgba(230,224,208,.3);width:28px;height:28px;cursor:pointer;font-size:13px;border-radius:2px;line-height:1}
+.gauth-close:hover{color:#fff;border-color:var(--gold,#8c6a14)}
+.gauth-body{padding:22px;background:#0f1a0d}
+.gauth-tabs{display:flex;border-bottom:1px solid rgba(120,180,120,.2)}
+.gauth-tab{flex:1;padding:12px;background:transparent;border:none;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(230,224,208,.55);cursor:pointer;border-bottom:2px solid transparent}
+.gauth-tab.active{color:#b0d8b0;border-bottom-color:var(--gold,#8c6a14);background:rgba(140,106,20,.08)}
+.gauth-field{margin-bottom:14px}
+.gauth-label{display:block;font-family:'IBM Plex Mono',monospace;font-size:8px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(230,224,208,.6);margin-bottom:5px}
+.gauth-input{width:100%;box-sizing:border-box;padding:11px 12px;background:#16241300;background:#122010;border:1px solid rgba(120,180,120,.3);border-radius:2px;font-family:'IBM Plex Mono',monospace;font-size:16px;color:#e8e0d0;outline:none;transition:border-color .15s}
+.gauth-input:focus{border-color:var(--gold,#8c6a14)}
+.gauth-submit{width:100%;padding:12px;background:#1a3a1a;color:#7ec87e;border:1px solid rgba(120,180,120,.5);font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border-radius:2px;margin-top:6px;min-height:44px}
+.gauth-submit:hover{background:var(--gold,#8c6a14);color:#12200f;border-color:var(--gold,#8c6a14)}
+.gauth-submit:disabled{opacity:.5;cursor:not-allowed}
+.gauth-google{width:100%;padding:11px;background:#fff;color:#3c4043;border:1px solid #dadce0;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.5px;cursor:pointer;border-radius:2px;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px}
+.gauth-google:hover{background:#f7f8f8}
+.gauth-or{display:flex;align-items:center;gap:10px;margin:14px 0;color:rgba(230,224,208,.4);font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase}
+.gauth-or::before,.gauth-or::after{content:'';flex:1;height:1px;background:rgba(120,180,120,.2)}
+.gauth-msg{font-family:'IBM Plex Mono',monospace;font-size:9px;padding:9px 11px;border-radius:2px;margin-top:12px;line-height:1.55}
+.gauth-msg.err{background:rgba(180,50,50,.14);border:1px solid rgba(200,70,70,.4);color:#ff9a9a}
+.gauth-msg.ok{background:rgba(46,125,50,.14);border:1px solid rgba(90,180,90,.4);color:#8ee68e}
+.gauth-msg.info{background:rgba(60,120,180,.12);border:1px solid rgba(90,150,200,.35);color:#9ac8f0}
+.gauth-link{background:none;border:none;color:rgba(230,224,208,.65);font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.8px;text-transform:uppercase;text-decoration:underline;cursor:pointer;padding:0;margin-top:12px;display:block}
+.gauth-link:hover{color:#b0d8b0}
+.gauth-link.danger{color:#e08585}
+.gauth-link.danger:hover{color:#ff9a9a}
+.gauth-info{background:rgba(140,106,20,.08);border-left:3px solid var(--gold,#8c6a14);padding:10px 12px;font-family:'IBM Plex Mono',monospace;font-size:9px;color:rgba(230,224,208,.75);line-height:1.6;margin-bottom:14px;border-radius:2px}
+.gauth-info strong{color:#e8e0d0}
+.gauth-signed{padding:6px 2px;text-align:center}
+.gauth-signed-icon{font-size:34px;margin-bottom:6px}
+.gauth-email-lg{font-family:'Libre Baskerville',serif;font-size:15px;font-weight:700;color:#7ec87e;word-break:break-all;margin-bottom:4px}
+.gauth-meta{font-family:'IBM Plex Mono',monospace;font-size:8px;color:rgba(230,224,208,.6);letter-spacing:1px;text-transform:uppercase;margin-bottom:16px}
+.gauth-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#5aea5a;margin-right:5px;vertical-align:middle;box-shadow:0 0 6px rgba(90,234,90,.7)}
+.gauth-stats{display:flex;gap:12px;margin-bottom:16px}
+.gauth-stat{flex:1;background:rgba(120,180,120,.06);padding:11px;border-radius:2px;border:1px solid rgba(120,180,120,.2)}
+.gauth-stat-n{font-family:'Libre Baskerville',serif;font-size:22px;font-weight:700;color:#b0d8b0}
+.gauth-stat-l{font-family:'IBM Plex Mono',monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;color:rgba(230,224,208,.5);margin-top:2px}
+</style>
+
+<!-- Auth modal shell (content rendered dynamically) -->
+<div class="gauth-overlay" id="gauthOverlay" role="dialog" aria-modal="true" aria-labelledby="gauthTitle">
+  <div class="gauth-modal">
+    <div class="gauth-head">
+      <div class="gauth-title" id="gauthTitle">Cloud Profile</div>
+      <div class="gauth-sub">Sync your bucket list &amp; scores across devices</div>
+      <button class="gauth-close" onclick="GOLF_CLOUD.closeModal()" aria-label="Close sign-in">✕</button>
+    </div>
+    <div id="gauthContent"></div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════════════
+//  GOLF CLOUD ACCOUNTS  — mirrors The Canon's Firebase auth, adapted for golf.
+//  Runs AFTER the main app script, so it shares the global lexical scope:
+//  it reads/writes `played`, `roundsData`, `userHandicap` and calls the app's
+//  render + save helpers directly. auth/db stay closure-private (never on
+//  window) to limit XSS blast radius. All cloud data is treated as UNTRUSTED
+//  and sanitized before it touches local state.
+// ═══════════════════════════════════════════════════════════════════════════
+(function(){
+  'use strict';
+
+  // ── CONFIG — replace with your Firebase project (see setup notes above) ──
+  const GOLF_FIREBASE_CONFIG = {
+    apiKey:            "REPLACE_WITH_YOUR_API_KEY",
+    authDomain:        "REPLACE_WITH_PROJECT.firebaseapp.com",
+    projectId:         "REPLACE_WITH_PROJECT",
+    storageBucket:     "REPLACE_WITH_PROJECT.firebasestorage.app",
+    messagingSenderId: "REPLACE_WITH_SENDER_ID",
+    appId:             "REPLACE_WITH_APP_ID"
+  };
+  const GOLF_RECAPTCHA_SITE_KEY = ""; // optional App Check; blank = skip
+  const SDK_VERSION = '10.13.0';
+
+  const isConfigured = !!GOLF_FIREBASE_CONFIG.apiKey &&
+                       !GOLF_FIREBASE_CONFIG.apiKey.startsWith('REPLACE_WITH');
+
+  // ── Origin self-check (loud console warning on unexpected host) ──
+  (function originCheck(){
+    if(!isConfigured) return;
+    const o = (typeof location!=='undefined' && location.origin) || '';
+    if(!o || o==='null') return;
+    const dev = /^https?:\/\/(localhost|127\.0\.0\.1)/.test(o);
+    // Add production origins here once deployed:
+    const allowed = [GOLF_FIREBASE_CONFIG.authDomain ? 'https://'+GOLF_FIREBASE_CONFIG.authDomain.replace('.firebaseapp.com','.web.app') : ''];
+    if(!dev && !allowed.includes(o)){
+      console.warn('%c[Golf Security]%c Loaded from unexpected origin: '+o+
+        '\nIf you did not deploy this build here, treat the Firebase apiKey as '+
+        'compromised and rotate it. Add trusted origins in the source.',
+        'background:#7a1a1a;color:#fff;padding:2px 6px;border-radius:2px','');
+    }
+  })();
+
+  // ── Lazy SDK loader — only runs on explicit sign-in intent ──
+  let _sdkPromise = null;
+  function loadScript(src){
+    return new Promise((res,rej)=>{
+      const el=document.createElement('script');
+      el.src=src; el.async=false;
+      el.onload=res; el.onerror=()=>rej(new Error('Failed to load '+src));
+      document.head.appendChild(el);
+    });
+  }
+  function loadSDK(){
+    if(_sdkPromise) return _sdkPromise;
+    const base='https://www.gstatic.com/firebasejs/'+SDK_VERSION+'/';
+    const files=['firebase-app-compat.js','firebase-auth-compat.js','firebase-firestore-compat.js'];
+    if(GOLF_RECAPTCHA_SITE_KEY) files.push('firebase-app-check-compat.js');
+    _sdkPromise = files.reduce((p,f)=>p.then(()=>loadScript(base+f)), Promise.resolve());
+    return _sdkPromise;
+  }
+
+  // ── Private Firebase handles ──
+  let auth=null, db=null, inited=false, _pushTimer=null;
+
+  async function ensureInit(){
+    if(inited) return;
+    if(!isConfigured){ const e=new Error('Cloud sync not configured'); e.code='golf/not-configured'; throw e; }
+    await loadSDK();
+    if(!firebase.apps.length) firebase.initializeApp(GOLF_FIREBASE_CONFIG);
+    if(GOLF_RECAPTCHA_SITE_KEY){
+      try{
+        const ac=firebase.appCheck();
+        ac.activate(new firebase.appCheck.ReCaptchaV3Provider(GOLF_RECAPTCHA_SITE_KEY), true);
+      }catch(e){ console.warn('[Golf Security] App Check activate failed:', e && e.message); }
+    }
+    auth = firebase.auth();
+    db   = firebase.firestore();
+    inited = true;
+    auth.onAuthStateChanged(onAuthChanged);
+  }
+
+  // ── Public state (minimal surface) ──
+  const state = { user:null, ready:false, configured:isConfigured, busy:false };
+
+  // ════════════════ AUTH FLOWS (email verification enforced) ════════════════
+  async function signUp(email, pwd){
+    await ensureInit();
+    const cred = await auth.createUserWithEmailAndPassword(email, pwd);
+    if(cred.user){
+      try{ await cred.user.sendEmailVerification(); }catch(e){}
+      try{ await auth.signOut(); }catch(e){}
+    }
+    return cred;
+  }
+  async function signIn(email, pwd){
+    await ensureInit();
+    const cred = await auth.signInWithEmailAndPassword(email, pwd);
+    if(cred.user && !cred.user.emailVerified){
+      try{ await cred.user.sendEmailVerification(); }catch(e){}
+      try{ await auth.signOut(); }catch(e){}
+      const err=new Error('Email not verified'); err.code='golf/email-not-verified'; throw err;
+    }
+    return cred;
+  }
+  async function signInGoogle(){
+    await ensureInit();
+    const provider=new firebase.auth.GoogleAuthProvider();
+    provider.addScope('email');
+    const cred=await auth.signInWithPopup(provider);
+    if(cred.user && !cred.user.emailVerified){
+      try{ await auth.signOut(); }catch(e){}
+      const err=new Error('Email not verified'); err.code='golf/email-not-verified'; throw err;
+    }
+    return cred;
+  }
+  async function resetPw(email){ await ensureInit(); return auth.sendPasswordResetEmail(email); }
+  async function doSignOutInternal(){ if(auth) return auth.signOut(); }
+  async function reauthPassword(pwd){
+    const u=auth.currentUser;
+    if(!u||!u.email){ const e=new Error('Not signed in'); e.code='golf/not-signed-in'; throw e; }
+    const cred=firebase.auth.EmailAuthProvider.credential(u.email, pwd);
+    return u.reauthenticateWithCredential(cred);
+  }
+  async function reauthGoogle(){
+    const u=auth.currentUser;
+    if(!u){ const e=new Error('Not signed in'); e.code='golf/not-signed-in'; throw e; }
+    const provider=new firebase.auth.GoogleAuthProvider();
+    return u.reauthenticateWithPopup(provider);
+  }
+  async function deleteAccount(){
+    const u=auth.currentUser;
+    if(!u){ const e=new Error('Not signed in'); e.code='golf/not-signed-in'; throw e; }
+    // Firestore-first while auth context is valid; user.delete() may still require
+    // recent login (handled by the reauth step). Deleting a missing doc is a no-op.
+    try{ await db.collection('users').doc(u.uid).delete(); }catch(e){ if(e && e.code!=='permission-denied' && e.code!=='not-found') throw e; }
+    await u.delete();
+  }
+
+  // ════════════════ CLOUD DATA — sanitize as UNTRUSTED, merge ════════════════
+  const MAXR = (typeof MAX_ROUNDS_PER_COURSE!=='undefined') ? MAX_ROUNDS_PER_COURSE : 50;
+  const validId = id => Number.isInteger(id) && (typeof courses==='undefined' || courses.some(c=>c.id===id));
+
+  function sanitizePlayed(arr){
+    if(!Array.isArray(arr)) return [];
+    const out=[];
+    arr.forEach(v=>{ const id=parseInt(v); if(validId(id) && out.indexOf(id)<0) out.push(id); });
+    return out;
+  }
+  function sanitizeRounds(obj){
+    const clean={};
+    if(!obj || typeof obj!=='object') return clean;
+    Object.keys(obj).forEach(k=>{
+      const id=parseInt(k);
+      if(!validId(id)) return;
+      const arr=obj[k];
+      if(!Array.isArray(arr)) return;
+      const seen=new Set();
+      const list=[];
+      arr.forEach(r=>{
+        if(!r || typeof r!=='object') return;
+        const gross=parseInt(r.gross);
+        const ts=parseInt(r.ts);
+        if(!Number.isInteger(gross) || gross<40 || gross>180) return;
+        if(!Number.isInteger(ts) || seen.has(ts)) return;
+        if(list.length>=MAXR) return;
+        seen.add(ts);
+        list.push({
+          gross: gross,
+          date:  String(r.date||'').slice(0,10),
+          tee:   String(r.tee||'').slice(0,40),
+          notes: String(r.notes||'').slice(0,280),
+          ts:    ts
+        });
+      });
+      if(list.length){ list.sort((a,b)=>b.ts-a.ts); clean[id]=list; }
+    });
+    return clean;
+  }
+  function sanitizeHandicap(v){
+    const n=Number(v);
+    if(!isFinite(n) || n<0 || n>54) return null;
+    return Math.round(n*10)/10;
+  }
+
+  // Merge cloud into local (union — never deletes local data), then re-render.
+  function mergeCloud(data){
+    let changed=false;
+    // played: union
+    const cp=sanitizePlayed(data.played);
+    cp.forEach(id=>{ if(!played.has(id)){ played.add(id); changed=true; } });
+    // rounds: merge by ts per course
+    const cr=sanitizeRounds(data.rounds);
+    Object.keys(cr).forEach(k=>{
+      const id=parseInt(k);
+      if(!roundsData[id]) roundsData[id]=[];
+      const have=new Set(roundsData[id].map(r=>r.ts));
+      cr[id].forEach(r=>{
+        if(!have.has(r.ts) && roundsData[id].length<MAXR){
+          roundsData[id].push(r); have.add(r.ts); changed=true;
+        }
+      });
+      roundsData[id].sort((a,b)=>b.ts-a.ts);
+    });
+    // handicap: adopt cloud value only if local unset
+    const ch=sanitizeHandicap(data.handicap);
+    if(ch!==null && (typeof userHandicap==='undefined' || userHandicap===null)){
+      userHandicap=ch; changed=true;
+    }
+    if(changed){
+      try{ safeStorageSet('mn_golf_played_v1',[...played]); }catch(e){}
+      try{ saveRounds(roundsData); }catch(e){}
+      try{ if(typeof saveHandicap==='function') safeStorageSet('mn_golf_handicap_v1', userHandicap); }catch(e){}
+      try{ renderCards(); updatePlayedUI(); updateRoundsUI(); }catch(e){ console.warn('re-render after cloud merge failed', e); }
+    }
+    return changed;
+  }
+
+  async function pullFromCloud(){
+    if(!state.user || !state.user.emailVerified) return;
+    try{
+      const ref=db.collection('users').doc(state.user.uid);
+      const snap=await ref.get();
+      if(snap.exists) mergeCloud(snap.data()||{});
+      // Push merged result back so cloud reflects the union.
+      pushNow();
+    }catch(e){ console.warn('[Golf] cloud pull failed:', e && e.message); }
+  }
+
+  async function pushNow(){
+    if(!inited || !state.user || !state.user.emailVerified) return;
+    try{
+      const ref=db.collection('users').doc(state.user.uid);
+      await ref.set({
+        played:    [...played],
+        rounds:    roundsData,
+        handicap:  (typeof userHandicap!=='undefined') ? userHandicap : null,
+        updatedAt: Date.now()
+      }, { merge:true });
+    }catch(e){ console.warn('[Golf] cloud push failed:', e && e.message); }
+  }
+  function queuePush(){
+    if(!state.user) return; // no-op for local-only users
+    if(_pushTimer) clearTimeout(_pushTimer);
+    _pushTimer=setTimeout(pushNow, 1500);
+  }
+
+  // Opt-in flag: set once a user establishes a verified session on this device.
+  // Boot only auto-loads Firebase when this is present, so users who never sign
+  // in keep the fully-local, zero-third-party experience even on a configured build.
+  const OPTIN_KEY='mn_golf_cloud_optin_v1';
+  function setOptIn(v){ try{ v?localStorage.setItem(OPTIN_KEY,'1'):localStorage.removeItem(OPTIN_KEY); }catch(e){} }
+  function hasOptIn(){ try{ return localStorage.getItem(OPTIN_KEY)==='1'; }catch(e){ return false; } }
+
+  async function onAuthChanged(user){
+    // Defense in depth: never allow a signed-in but unverified session.
+    if(user && !user.emailVerified){
+      try{ await auth.signOut(); }catch(e){}
+      return;
+    }
+    state.user=user; state.ready=true;
+    if(user) setOptIn(true);
+    updateButton();
+    if(user){ await pullFromCloud(); }
+    renderModal(); // refresh modal if open
+  }
+
+  // ════════════════════════════════ UI ════════════════════════════════
+  let view='signin'; // signin | signup | account | delete-confirm | delete-reauth | delete-success
+
+  function esc(s){ return (typeof escHtml==='function') ? escHtml(s) : String(s==null?'':s); }
+  function overlay(){ return document.getElementById('gauthOverlay'); }
+  function content(){ return document.getElementById('gauthContent'); }
+  function msg(el, text, kind){ if(el) el.innerHTML='<div class="gauth-msg '+(kind||'info')+'">'+esc(text)+'</div>'; }
+
+  function friendlyError(e){
+    const c=(e&&e.code)||'';
+    const map={
+      'auth/invalid-email':'That email address looks invalid.',
+      'auth/user-not-found':'No account found for that email.',
+      'auth/wrong-password':'Incorrect email or password.',
+      'auth/invalid-credential':'Incorrect email or password.',
+      'auth/email-already-in-use':'An account already exists for that email. Try signing in.',
+      'auth/weak-password':'Password must be at least 6 characters.',
+      'auth/too-many-requests':'Too many attempts. Please wait a moment and try again.',
+      'auth/popup-closed-by-user':'Sign-in window was closed before finishing.',
+      'auth/popup-blocked':'Your browser blocked the sign-in popup. Allow popups and retry.',
+      'auth/network-request-failed':'Network error. Check your connection and try again.',
+      'auth/requires-recent-login':'Please re-enter your credentials to continue.',
+      'golf/email-not-verified':'Please verify your email first — we just sent you a new link.',
+      'golf/not-configured':'Cloud sync isn’t set up yet on this build.'
+    };
+    return map[c] || (e && e.message) || 'Something went wrong. Please try again.';
+  }
+
+  function openModal(v){ view=v||(state.user?'account':'signin'); renderModal(); const o=overlay(); if(o){ o.classList.add('open'); } }
+  function closeModal(){ const o=overlay(); if(o) o.classList.remove('open'); }
+  function setView(v){ view=v; renderModal(); }
+
+  function totalRounds(){
+    try{ return Object.keys(roundsData).reduce((a,k)=>a+((roundsData[k]&&roundsData[k].length)||0),0); }catch(e){ return 0; }
+  }
+
+  function renderModal(){
+    const c=content(); if(!c) return;
+
+    if(!state.configured){
+      c.innerHTML =
+        '<div class="gauth-body">'+
+          '<div class="gauth-info"><strong>⚙ Cloud sync isn’t configured yet.</strong><br>'+
+          'Your data is saved locally on this device and works fully offline. To sync your '+
+          'bucket list &amp; scores across devices, the app owner adds a free Firebase config '+
+          '(setup steps are in the source file).</div>'+
+          '<div class="gauth-info" style="border-left-color:#5a9ad0">Nothing you do here leaves '+
+          'your device until cloud sync is turned on and you choose to sign in.</div>'+
+          '<button class="gauth-submit" onclick="GOLF_CLOUD.closeModal()">Continue with local storage</button>'+
+        '</div>';
+      return;
+    }
+
+    if(state.user){
+      const email=esc(state.user.email||'');
+      if(view==='delete-confirm'){
+        c.innerHTML =
+          '<div class="gauth-body">'+
+            '<div style="color:#ff9a9a;font-family:\'Libre Baskerville\',serif;font-size:18px;font-weight:700;text-align:center;margin-bottom:10px">Delete Account</div>'+
+            '<div class="gauth-msg err">This permanently deletes:<br>• Your account ('+email+')<br>• Cloud-synced data: '+played.size+' played, '+totalRounds()+' rounds, handicap<br>• Your local copy on this device<br><strong>This cannot be undone.</strong></div>'+
+            '<div class="gauth-label" style="margin-top:14px">Type your email to confirm</div>'+
+            '<input class="gauth-input" id="gauthDelConfirm" autocomplete="off" placeholder="'+email+'" oninput="GOLF_CLOUD._delBtn()">'+
+            '<div style="display:flex;gap:8px;margin-top:12px">'+
+              '<button class="gauth-submit" style="background:#2a2a2a;color:#ccc;border-color:#444" onclick="GOLF_CLOUD.setView(\'account\')">Cancel</button>'+
+              '<button class="gauth-submit" id="gauthDelBtn" disabled style="background:#7a1a1a;color:#fff;border-color:#7a1a1a;opacity:.4" onclick="GOLF_CLOUD.startDelete()">Delete Permanently</button>'+
+            '</div>'+
+            '<div id="gauthMsg"></div>'+
+          '</div>';
+        return;
+      }
+      if(view==='delete-reauth'){
+        const isGoogle = (state.user.providerData||[]).some(p=>p&&p.providerId==='google.com');
+        c.innerHTML =
+          '<div class="gauth-body">'+
+            '<div style="color:#ff9a9a;font-family:\'Libre Baskerville\',serif;font-size:18px;font-weight:700;text-align:center;margin-bottom:10px">Confirm It’s You</div>'+
+            (isGoogle
+              ? '<div class="gauth-info">For security, confirm with Google to delete your account.</div>'+
+                '<button class="gauth-google" onclick="GOLF_CLOUD.confirmDeleteGoogle()"><span>Continue with Google</span></button>'
+              : '<div class="gauth-info">For security, re-enter your password to delete your account.</div>'+
+                '<input class="gauth-input" id="gauthReauth" type="password" autocomplete="current-password" placeholder="Your password">'+
+                '<button class="gauth-submit" style="background:#7a1a1a;color:#fff;border-color:#7a1a1a" onclick="GOLF_CLOUD.confirmDeletePassword()">Confirm &amp; Delete</button>')+
+            '<button class="gauth-link" onclick="GOLF_CLOUD.setView(\'account\')">Cancel</button>'+
+            '<div id="gauthMsg"></div>'+
+          '</div>';
+        return;
+      }
+      if(view==='delete-success'){
+        c.innerHTML =
+          '<div class="gauth-body"><div class="gauth-signed">'+
+            '<div style="color:#8ee68e;font-family:\'Libre Baskerville\',serif;font-size:20px;font-weight:700;margin-bottom:12px">✓ Account Deleted</div>'+
+            '<div style="font-family:\'IBM Plex Mono\',monospace;font-size:9px;color:rgba(230,224,208,.75);line-height:1.7">Your account and all cloud data have been permanently removed. Your local data on this device was cleared too. Thanks for playing.</div>'+
+          '</div></div>';
+        return;
+      }
+      // account (default)
+      c.innerHTML =
+        '<div class="gauth-body"><div class="gauth-signed">'+
+          '<div class="gauth-signed-icon">⛳</div>'+
+          '<div class="gauth-email-lg">'+email+'</div>'+
+          '<div class="gauth-meta"><span class="gauth-dot"></span> Cloud sync active</div>'+
+          '<div class="gauth-stats">'+
+            '<div class="gauth-stat"><div class="gauth-stat-n">'+played.size+'</div><div class="gauth-stat-l">Courses Played</div></div>'+
+            '<div class="gauth-stat"><div class="gauth-stat-n">'+totalRounds()+'</div><div class="gauth-stat-l">Rounds Logged</div></div>'+
+          '</div>'+
+          '<button class="gauth-submit" style="background:transparent;color:rgba(230,224,208,.8);border-color:rgba(120,180,120,.35)" onclick="GOLF_CLOUD.signOut()">Sign Out</button>'+
+          '<button class="gauth-link" onclick="GOLF_CLOUD.exportData()">Download my data</button>'+
+          '<button class="gauth-link danger" onclick="GOLF_CLOUD.setView(\'delete-confirm\')">Delete my account &amp; data</button>'+
+          '<div id="gauthMsg"></div>'+
+        '</div></div>';
+      return;
+    }
+
+    // signed out — signin / signup tabs
+    const tab = v => 'class="gauth-tab'+(view===v?' active':'')+'"';
+    const isSignup = view==='signup';
+    c.innerHTML =
+      '<div class="gauth-tabs">'+
+        '<button '+tab('signin')+' onclick="GOLF_CLOUD.setView(\'signin\')">Sign In</button>'+
+        '<button '+tab('signup')+' onclick="GOLF_CLOUD.setView(\'signup\')">Create Account</button>'+
+      '</div>'+
+      '<div class="gauth-body">'+
+        (isSignup ? '<div class="gauth-info">We’ll email you a verification link. Your played courses, rounds &amp; handicap then sync privately across your devices. Photos stay on this device.</div>' : '')+
+        '<div class="gauth-field"><label class="gauth-label" for="gauthEmail">Email</label>'+
+          '<input class="gauth-input" id="gauthEmail" type="email" autocomplete="email" placeholder="you@example.com"></div>'+
+        '<div class="gauth-field"><label class="gauth-label" for="gauthPwd">Password</label>'+
+          '<input class="gauth-input" id="gauthPwd" type="password" autocomplete="'+(isSignup?'new-password':'current-password')+'" placeholder="'+(isSignup?'At least 6 characters':'Your password')+'"></div>'+
+        '<button class="gauth-submit" onclick="GOLF_CLOUD.submitEmail()">'+(isSignup?'Create Account':'Sign In')+'</button>'+
+        (isSignup ? '' : '<button class="gauth-link" onclick="GOLF_CLOUD.forgotPw()">Forgot password?</button>')+
+        '<div class="gauth-or">or</div>'+
+        '<button class="gauth-google" onclick="GOLF_CLOUD.google()"><span>Continue with Google</span></button>'+
+        '<div id="gauthMsg"></div>'+
+      '</div>';
+    // Enter-to-submit
+    const pwd=document.getElementById('gauthPwd');
+    if(pwd) pwd.addEventListener('keydown', ev=>{ if(ev.key==='Enter') submitEmail(); });
+  }
+
+  function updateButton(){
+    const btn=document.getElementById('gauthBtn');
+    if(!btn) return;
+    if(state.user){
+      btn.innerHTML='<span>⛳</span><span class="gauth-email">'+esc(state.user.email||'Account')+'</span>';
+      btn.setAttribute('aria-label','Account: '+(state.user.email||''));
+    }else{
+      btn.innerHTML='<span>👤</span><span>Sign In</span>';
+      btn.setAttribute('aria-label','Sign in to sync across devices');
+    }
+  }
+
+  // ── Action handlers (called from inline onclick) ──
+  async function submitEmail(){
+    const email=(document.getElementById('gauthEmail')||{}).value||'';
+    const pwd=(document.getElementById('gauthPwd')||{}).value||'';
+    const m=document.getElementById('gauthMsg');
+    if(!email.trim()||!pwd){ msg(m,'Please enter your email and password.','err'); return; }
+    msg(m, view==='signup'?'Creating your account…':'Signing in…','info');
+    try{
+      if(view==='signup'){
+        await signUp(email.trim(), pwd);
+        msg(m,'Account created! Check your email for a verification link, then sign in.','ok');
+        view='signin';
+        setTimeout(()=>{ renderModal(); const mm=document.getElementById('gauthMsg'); msg(mm,'Verify your email, then sign in.','info'); }, 1800);
+      }else{
+        await signIn(email.trim(), pwd);
+        // onAuthChanged handles the rest
+      }
+    }catch(e){ msg(m, friendlyError(e), 'err'); }
+  }
+  async function google(){
+    const m=document.getElementById('gauthMsg');
+    msg(m,'Opening Google…','info');
+    try{ await signInGoogle(); }
+    catch(e){ msg(m, friendlyError(e), 'err'); }
+  }
+  async function forgotPw(){
+    const email=(document.getElementById('gauthEmail')||{}).value||'';
+    const m=document.getElementById('gauthMsg');
+    if(!email.trim()){ msg(m,'Enter your email above first, then tap Forgot password.','err'); return; }
+    try{ await resetPw(email.trim()); msg(m,'Password reset email sent (check your inbox).','ok'); }
+    catch(e){ msg(m, friendlyError(e), 'err'); }
+  }
+  async function signOut(){
+    try{ await doSignOutInternal(); }catch(e){}
+    setOptIn(false);
+    closeModal();
+    if(typeof showToast==='function') showToast('Signed out. Your data stays on this device.','info');
+  }
+  function _delBtn(){
+    const inp=document.getElementById('gauthDelConfirm');
+    const btn=document.getElementById('gauthDelBtn');
+    if(!inp||!btn) return;
+    const ok = inp.value.trim().toLowerCase() === String(state.user&&state.user.email||'').toLowerCase();
+    btn.disabled=!ok; btn.style.opacity=ok?'1':'.4';
+  }
+  function startDelete(){ setView('delete-reauth'); }
+
+  async function finishDelete(){
+    const m=document.getElementById('gauthMsg');
+    msg(m,'Deleting your account…','info');
+    try{
+      await deleteAccount();
+      // Wipe local copy too (parity with cloud deletion)
+      try{
+        played.clear(); safeStorageSet('mn_golf_played_v1',[]);
+        Object.keys(roundsData).forEach(k=>delete roundsData[k]); saveRounds(roundsData);
+        if(typeof userHandicap!=='undefined'){ userHandicap=null; safeStorageSet('mn_golf_handicap_v1',null); }
+        renderCards(); updatePlayedUI(); updateRoundsUI();
+      }catch(e){}
+      setOptIn(false);
+      state.user=null; updateButton();
+      view='delete-success'; renderModal();
+    }catch(e){
+      if(e && e.code==='auth/requires-recent-login'){ setView('delete-reauth'); msg(document.getElementById('gauthMsg'),'Please confirm it’s you, then delete again.','info'); }
+      else msg(m, friendlyError(e), 'err');
+    }
+  }
+  async function confirmDeletePassword(){
+    const pwd=(document.getElementById('gauthReauth')||{}).value||'';
+    const m=document.getElementById('gauthMsg');
+    if(!pwd){ msg(m,'Enter your password.','err'); return; }
+    msg(m,'Confirming…','info');
+    try{ await reauthPassword(pwd); await finishDelete(); }
+    catch(e){ msg(m, friendlyError(e), 'err'); }
+  }
+  async function confirmDeleteGoogle(){
+    const m=document.getElementById('gauthMsg');
+    msg(m,'Confirming with Google…','info');
+    try{ await reauthGoogle(); await finishDelete(); }
+    catch(e){ msg(m, friendlyError(e), 'err'); }
+  }
+  function exportData(){
+    if(typeof exportDataJSON==='function'){ exportDataJSON(); }
+    else if(typeof showToast==='function'){ showToast('Export unavailable.','warn'); }
+  }
+
+  // ── Inject the header sign-in button into the hero ──
+  function injectButton(){
+    const hero=document.querySelector('.hero');
+    if(!hero || document.getElementById('gauthBtn')) return;
+    const btn=document.createElement('button');
+    btn.className='gauth-btn'; btn.id='gauthBtn'; btn.type='button';
+    btn.innerHTML='<span>👤</span><span>Sign In</span>';
+    btn.setAttribute('aria-label','Sign in to sync across devices');
+    btn.onclick=()=>openModal();
+    hero.appendChild(btn);
+  }
+
+  // Close on overlay backdrop click / Escape
+  function wireOverlay(){
+    const o=overlay();
+    if(o) o.addEventListener('click', e=>{ if(e.target===o) closeModal(); });
+    document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ const ov=overlay(); if(ov && ov.classList.contains('open')) closeModal(); } });
+  }
+
+  // ── Public surface (minimal) ──
+  window.GOLF_CLOUD = {
+    configured: isConfigured,
+    queuePush: queuePush,
+    openModal: openModal,
+    closeModal: closeModal,
+    setView: setView,
+    submitEmail: submitEmail,
+    google: google,
+    forgotPw: forgotPw,
+    signOut: signOut,
+    exportData: exportData,
+    _delBtn: _delBtn,
+    startDelete: startDelete,
+    confirmDeletePassword: confirmDeletePassword,
+    confirmDeleteGoogle: confirmDeleteGoogle
+  };
+
+  // ── Boot (no Firebase yet — SDK loads only on sign-in) ──
+  function boot(){
+    injectButton();
+    wireOverlay();
+    updateButton();
+    renderModal();
+    // Auto-restore a session ONLY for users who previously opted into cloud on
+    // this device. New/local-only users load zero Firebase code until they
+    // explicitly tap Sign In (which calls ensureInit via the auth flows).
+    if(isConfigured && hasOptIn()){
+      ensureInit().catch(()=>{ /* stays local; sign-in will retry */ });
+    }
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
+})();
+</script>
+
 </body>
 </html>
