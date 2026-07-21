@@ -1,6 +1,13 @@
 node_modules/
 *.json
 !package.json
+# scraping outputs / working files (local only)
 one.json
 lost.json
 t.json
+out.txt
+out_err.txt
+downloads/
+shots/
+# reference copy of "the canon" — contains real Firebase keys, never publish
+canon_reference.html
