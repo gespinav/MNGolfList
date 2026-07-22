@@ -55,4 +55,11 @@ To deploy your own copy:
 
 ## License
 
-Personal project. Course data is compiled from public sources. All rights reserved.
+**Copyright © 2026 Gabe EV (github.com/gespinav). All rights reserved.**
+
+This project is **proprietary and confidential**. It is **not** open source. No
+license or permission is granted to use, copy, modify, distribute, host, mirror,
+or create derivative works from any part of this repository or the deployed
+application — including its code, design, and curated course/scorecard data —
+without prior written permission. Viewing the public site or repository grants no
+such rights. See [LICENSE](./LICENSE). Unauthorized use is prohibited.
