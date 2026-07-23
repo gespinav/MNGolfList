@@ -20,7 +20,7 @@
   style-src 'self' 'unsafe-inline';
   font-src 'self' data:;
   img-src 'self' data: blob: https://tile.openstreetmap.org https://*.tile.openstreetmap.org https://*.googleusercontent.com https://www.gstatic.com https://ssl.gstatic.com;
-  connect-src 'self' https://*.googleapis.com https://*.firebaseio.com https://*.firebaseapp.com;
+  connect-src 'self' https://*.googleapis.com https://*.firebaseio.com https://*.firebaseapp.com https://www.google.com;
   frame-src https://*.firebaseapp.com https://accounts.google.com https://www.google.com;
   manifest-src 'self' data:;
   worker-src 'self' blob:;
@@ -4987,7 +4987,7 @@ initPhotos();
     messagingSenderId: "419879125069",
     appId:             "1:419879125069:web:dca13a09fa51a9fa269c04"
   };
-  const GOLF_RECAPTCHA_SITE_KEY = ""; // optional App Check; blank = skip
+  const GOLF_RECAPTCHA_SITE_KEY = "6LfbU2EtAAAAAAghZ0LnG8KiZ5-qG-i0y28YOArU"; // App Check (reCAPTCHA Enterprise); blank = skip
   const SDK_VERSION = '10.13.0';
 
   const isConfigured = !!GOLF_FIREBASE_CONFIG.apiKey &&
@@ -5039,7 +5039,7 @@ initPhotos();
     if(GOLF_RECAPTCHA_SITE_KEY){
       try{
         const ac=firebase.appCheck();
-        ac.activate(new firebase.appCheck.ReCaptchaV3Provider(GOLF_RECAPTCHA_SITE_KEY), true);
+        ac.activate(new firebase.appCheck.ReCaptchaEnterpriseProvider(GOLF_RECAPTCHA_SITE_KEY), true);
       }catch(e){ console.warn('[Golf Security] App Check activate failed:', e && e.message); }
     }
     auth = firebase.auth();
