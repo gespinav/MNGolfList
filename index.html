@@ -106,6 +106,10 @@ body{background:var(--bg);color:var(--cream);font-family:'IBM Plex Sans',sans-se
   display:flex;align-items:center;gap:8px;flex-wrap:wrap;
   position:sticky;top:0;z-index:200;
 }
+/* Collapsible filter: desktop keeps filters inline (display:contents = no box);
+   mobile turns the group into a toggle-able, scrollable panel (see @media below). */
+.filter-toggle{display:none}
+.filter-group{display:contents}
 /* ── FILTER BUTTONS — dark green outline, black text, light background ── */
 .ctrl-label{
   font-size:11px;letter-spacing:.18em;text-transform:uppercase;
@@ -609,8 +613,18 @@ body{background:var(--bg);color:var(--cream);font-family:'IBM Plex Sans',sans-se
   .search-wrap input{width:100%}
   .hero-bottom{flex-direction:column}
   .bucket-widget{width:100%}
-  /* Mobile filters — WRAP so every option stays on-screen (no horizontal run-off) */
-  .controls{flex-wrap:wrap;gap:7px;padding-bottom:12px;overflow-x:hidden}
+  /* Mobile filters — collapse into a compact toggle bar so they don't dominate the
+     screen when scrolling. Row 1 = [⚙ Filters ▾] + search; tap to expand a
+     scrollable filter panel; picking a filter auto-collapses it. */
+  .controls{flex-wrap:wrap;gap:8px;padding-bottom:10px;overflow-x:hidden}
+  .filter-toggle{display:inline-flex;align-items:center;justify-content:space-between;gap:8px;order:1;flex:0 0 auto;min-height:42px;padding:9px 14px;background:#fff;border:2px solid #1a5c2e;border-radius:3px;color:#0d2818;font-family:'IBM Plex Sans',sans-serif;font-size:12px;font-weight:800;letter-spacing:.04em;cursor:pointer;touch-action:manipulation;white-space:nowrap;max-width:60%}
+  .filter-toggle .ft-left{overflow:hidden;text-overflow:ellipsis}
+  .controls.filter-active .filter-toggle{background:#1a5c2e;color:#fff;border-color:#1a5c2e}
+  .filter-toggle .ft-caret{transition:transform .25s;font-size:10px;flex:0 0 auto}
+  .controls.filters-open .filter-toggle .ft-caret{transform:rotate(180deg)}
+  .search-wrap{order:2;flex:1 1 130px;min-width:0;margin-left:0}
+  .filter-group{display:flex;flex-wrap:wrap;gap:7px;order:3;flex-basis:100%;max-height:0;overflow:hidden;opacity:0;transition:max-height .3s ease,opacity .2s,margin .2s}
+  .controls.filters-open .filter-group{max-height:52vh;overflow-y:auto;-webkit-overflow-scrolling:touch;opacity:1;margin-top:2px;padding:2px 2px 6px}
   .ctrl-label{width:100%;margin-bottom:2px}
   .fbtn{padding:9px 12px;font-size:11.5px;flex:0 0 auto}
   .sep{display:none}
@@ -957,21 +971,27 @@ select:focus-visible,
 </div>
 
 <div class="controls">
-  <span class="ctrl-label">Filter:</span>
-  <button class="fbtn on" data-f="all">All</button>
-  <button class="fbtn" data-f="resort">Resort</button>
-  <button class="fbtn" data-f="municipal">Municipal</button>
-  <button class="fbtn" data-f="daily">Daily Fee</button>
-  <button class="fbtn" data-f="semi">Semi-Private</button>
-  <div class="sep"></div>
-  <button class="fbtn" data-f="gd100">GD Top-100</button>
-  <button class="fbtn" data-f="north">Northern MN</button>
-  <button class="fbtn" data-f="metro">Twin Cities</button>
-  <button class="fbtn" data-f="outstate">Out-State</button>
-  <div class="sep"></div>
-  <button class="fbtn played-filter" data-f="played">✓ Played</button>
-  <button class="fbtn played-filter" data-f="unplayed">○ Not Played</button>
-  <button class="fbtn" data-f="yoc" title="Youth on Course — discounted rounds ages 6–18" style="border-color:rgba(230,80,0,.4);color:#8a3000">🟠 Youth Rates</button>
+  <button class="filter-toggle" id="filterToggle" type="button" aria-expanded="false" aria-controls="filterGroup">
+    <span class="ft-left">⚙ <span id="filterToggleLabel">Filters</span></span>
+    <span class="ft-caret" aria-hidden="true">▾</span>
+  </button>
+  <div class="filter-group" id="filterGroup">
+    <span class="ctrl-label">Filter:</span>
+    <button class="fbtn on" data-f="all">All</button>
+    <button class="fbtn" data-f="resort">Resort</button>
+    <button class="fbtn" data-f="municipal">Municipal</button>
+    <button class="fbtn" data-f="daily">Daily Fee</button>
+    <button class="fbtn" data-f="semi">Semi-Private</button>
+    <div class="sep"></div>
+    <button class="fbtn" data-f="gd100">GD Top-100</button>
+    <button class="fbtn" data-f="north">Northern MN</button>
+    <button class="fbtn" data-f="metro">Twin Cities</button>
+    <button class="fbtn" data-f="outstate">Out-State</button>
+    <div class="sep"></div>
+    <button class="fbtn played-filter" data-f="played">✓ Played</button>
+    <button class="fbtn played-filter" data-f="unplayed">○ Not Played</button>
+    <button class="fbtn" data-f="yoc" title="Youth on Course — discounted rounds ages 6–18" style="border-color:rgba(230,80,0,.4);color:#8a3000">🟠 Youth Rates</button>
+  </div>
   <div class="search-wrap">
     <input type="text" id="srch" placeholder="Search course, city, designer…">
   </div>
@@ -4334,14 +4354,34 @@ async function initPhotos() {
 let _searchTimer = null;
 function debounce(fn, ms){ return (...args) => { clearTimeout(_searchTimer); _searchTimer = setTimeout(() => fn(...args), ms); }; }
 
+const _controlsEl = document.querySelector('.controls');
+const _filterToggle = document.getElementById('filterToggle');
+const _filterToggleLabel = document.getElementById('filterToggleLabel');
+function _updateFilterToggle(){
+  const active = document.querySelector('.fbtn.on');
+  const f = active ? active.dataset.f : 'all';
+  if (_filterToggleLabel) _filterToggleLabel.textContent = (f === 'all' || !active) ? 'Filters' : active.textContent.trim();
+  if (_controlsEl) _controlsEl.classList.toggle('filter-active', f !== 'all');
+}
+if (_filterToggle) {
+  _filterToggle.addEventListener('click', () => {
+    const open = _controlsEl.classList.toggle('filters-open');
+    _filterToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+}
 document.querySelectorAll('.fbtn').forEach(b => {
   b.addEventListener('click', function(){
     document.querySelectorAll('.fbtn').forEach(x => x.classList.remove('on'));
     this.classList.add('on');
     applyFilters();
+    _updateFilterToggle();
+    // Collapse the mobile filter panel after a choice so results are visible immediately
+    _controlsEl.classList.remove('filters-open');
+    if (_filterToggle) _filterToggle.setAttribute('aria-expanded', 'false');
   });
 });
 document.getElementById('srch').addEventListener('input', debounce(applyFilters, 16));
+_updateFilterToggle();
 
 function applyFilters(){
   const f   = document.querySelector('.fbtn.on')?.dataset.f || 'all';
@@ -5515,10 +5555,12 @@ initPhotos();
     wireOverlay();
     updateButton();
     renderModal();
-    // Auto-restore a session ONLY for users who previously opted into cloud on
-    // this device. New/local-only users load zero Firebase code until they
-    // explicitly tap Sign In (which calls ensureInit via the auth flows).
-    if(isConfigured && hasOptIn()){
+    // Initialize Firebase + App Check on page load so reCAPTCHA (the badge AND
+    // backend protection) is active immediately for every visitor — matching the
+    // behavior of the other apps. NOTE: this loads Google reCAPTCHA/Firebase on
+    // arrival, so it is no longer "zero third-party until sign-in." This also
+    // silently restores an existing verified session via onAuthStateChanged.
+    if(isConfigured){
       ensureInit().catch(()=>{ /* stays local; sign-in will retry */ });
     }
   }
