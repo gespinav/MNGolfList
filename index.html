@@ -5109,6 +5109,18 @@ initPhotos();
         // "protected by reCAPTCHA" badge never renders. This forces execution +
         // renders the badge (and readies App Check tokens for Firestore/Auth).
         ac.getToken(true).catch(()=>{});
+        // Firebase App Check renders the reCAPTCHA Enterprise badge inside a
+        // display:none wrapper (background attestation), so it's invisible. Reveal
+        // that wrapper so the "protected by reCAPTCHA" badge shows bottom-right,
+        // matching standard reCAPTCHA sites. Poll because the badge is created async.
+        (function revealBadge(){
+          let tries = 0;
+          const iv = setInterval(() => {
+            const bd = document.querySelector('.grecaptcha-badge');
+            if (bd && bd.parentElement) { bd.parentElement.style.display = 'block'; clearInterval(iv); }
+            else if (++tries > 24) clearInterval(iv);
+          }, 500);
+        })();
       }catch(e){ console.warn('[Golf Security] App Check activate failed:', e && e.message); }
     }
     auth = firebase.auth();
