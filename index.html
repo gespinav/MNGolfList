@@ -776,6 +776,10 @@ select:focus-visible,
 
 /* ── DATA TRIGGER BUTTON IN FOOTER ── */
 .footer-data-btn{display:inline-flex;align-items:center;gap:5px;margin-top:10px;padding:7px 14px;background:transparent;border:1px solid rgba(61,107,61,.28);color:var(--sage);font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;cursor:pointer;transition:all .2s;min-height:44px;touch-action:manipulation}
+.footer-copyright{margin-top:18px;padding-top:14px;border-top:1px solid rgba(61,107,61,.18);font-family:'IBM Plex Mono',monospace;font-size:9.5px;line-height:1.7;letter-spacing:.02em;color:var(--muted);max-width:960px}
+.footer-copyright strong{color:var(--sage)}
+.footer-copyright a{color:var(--sage);text-decoration:underline}
+.footer-copyright a:hover{color:var(--gold)}
 .footer-data-btn:hover{border-color:var(--gold);color:var(--gold)}
 
 /* ── EXTERNAL LINKS — Official Website / Get Scorecard ── */
@@ -1025,6 +1029,13 @@ select:focus-visible,
   <strong>Your Data:</strong> Local-first — played status, rounds &amp; photos live in your browser. Signing in is optional and only syncs played/rounds/handicap privately across your devices; photos always stay on-device.
   <br>
   <button class="footer-data-btn" onclick="openDataPanel()" aria-label="Open data privacy and export panel">🔒 Your Data &amp; Privacy</button>
+  <div class="footer-copyright">
+    © 2026 Gabe EV · <strong>Minnesota Public Golf — Master Rankings</strong>. All rights reserved.
+    Proprietary &amp; confidential: this website, its design, code, and curated course &amp; scorecard data
+    may not be copied, reproduced, scraped, mirrored, hosted, or reused — in whole or in part, by any means —
+    without prior written permission. Viewing this site grants no license to its contents.
+    <a href="https://github.com/gespinav/MNGolfList/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">Full license terms</a>.
+  </div>
 </div>
 
 <!-- ── DATA PRIVACY &amp; EXPORT PANEL ── -->
